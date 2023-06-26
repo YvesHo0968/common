@@ -306,6 +306,20 @@ func TestGetGatewayIp(t *testing.T) {
 	fmt.Println(GetGatewayIp())
 }
 
+func TestPkcs7(t *testing.T) {
+	pkcs7Pad := Pkcs7Pad([]byte("121212"), 16)
+	fmt.Println(pkcs7Pad)
+	pkcs7UnPad := Pkcs7UnPad(pkcs7Pad)
+	fmt.Println(pkcs7UnPad)
+}
+
+func TestEncryptAES(t *testing.T) {
+	aesEncrypt, _ := AesEncrypt("1234", []byte(SubStr("202cb962ac59075b202cb962ac59075b", 0, 16)))
+	fmt.Println(aesEncrypt)
+	aesDecrypt, _ := AesDecrypt("7yb44FbQ/UbYhJS4UnsVnw==", []byte(SubStr("202cb962ac59075b202cb962ac59075b", 0, 16)))
+	fmt.Println(aesDecrypt)
+}
+
 func TestName(t *testing.T) {
 	cmd := exec.Command("ls", "-lah")
 	//cmd.Stdout = os.Stdout
