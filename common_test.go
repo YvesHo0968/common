@@ -314,10 +314,37 @@ func TestPkcs7(t *testing.T) {
 }
 
 func TestEncryptAES(t *testing.T) {
-	aesEncrypt, _ := AesEncrypt("1234", []byte(SubStr("202cb962ac59075b202cb962ac59075b", 0, 16)))
+	aesEncrypt, _ := AesEncrypt("1234", []byte(SubStr(Md5("123"), 0, 16)))
 	fmt.Println(aesEncrypt)
-	aesDecrypt, _ := AesDecrypt("7yb44FbQ/UbYhJS4UnsVnw==", []byte(SubStr("202cb962ac59075b202cb962ac59075b", 0, 16)))
+	aesDecrypt, _ := AesDecrypt("rheAW8gI36t1G1PK6hgV1g==", []byte(SubStr(Md5("123"), 0, 16)))
+
 	fmt.Println(aesDecrypt)
+}
+
+func TestGetType(t *testing.T) {
+	var str string = "Hello, World!"
+	var num int = 123
+	var flag bool = true
+	fmt.Println(GetType(str), GetType(num), GetType(flag))
+
+	data := map[string]interface{}{
+		"key1": "value1",
+		"key2": 123,
+		"key3": true,
+		"key4": []int{1, 2, 3, 4, 5},
+		"key5": []string{"e", "e"},
+		"key6": map[string]any{
+			"key1": "value1",
+			"key2": 123,
+			"key3": true,
+		},
+	}
+
+	for key, value := range data {
+		valueType := GetType(value)
+		fmt.Printf("Key: %s, Value: %v, Type: %s\n", key, value, valueType)
+	}
+
 }
 
 func TestName(t *testing.T) {

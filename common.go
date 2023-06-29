@@ -30,6 +30,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"reflect"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -549,6 +550,11 @@ func SubStr(str string, start int, length int) string {
 	}
 
 	return string(rs[start:end])
+}
+
+// GetType 获取遍历类型
+func GetType(v interface{}) string {
+	return reflect.TypeOf(v).String()
 }
 
 // GetPid 获取进程id
