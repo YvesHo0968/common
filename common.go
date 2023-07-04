@@ -796,3 +796,16 @@ func CurlPost(url string, data interface{}, contentType string) string {
 	result, _ := io.ReadAll(resp.Body)
 	return string(result)
 }
+
+// Pkcs7Padding PKCS#7 Padding：对于要填充的字节数n，将n个字节都填充为n
+func Pkcs7Padding(data []byte, blockSize int) []byte {
+	pad := blockSize - len(data)%blockSize
+	b := bytes.Repeat([]byte{byte(pad)}, pad)
+	return append(data, b...)
+}
+
+// UnPkcs7Padding PKCS#7去除Padding
+func UnPkcs7Padding(data []byte) []byte {
+	pad := int(data[len(data)-1])
+	return data[:len(data)-pad]
+}
