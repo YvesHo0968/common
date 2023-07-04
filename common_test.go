@@ -1,6 +1,7 @@
 package common
 
 import (
+	"encoding/base64"
 	"fmt"
 	"github.com/rs/zerolog"
 	"golang.org/x/text/encoding/simplifiedchinese"
@@ -307,18 +308,166 @@ func TestGetGatewayIp(t *testing.T) {
 }
 
 func TestPkcs7(t *testing.T) {
-	pkcs7Pad := Pkcs7Pad([]byte("121212"), 16)
+	pkcs7Pad := Pkcs7Padding([]byte("121212"), 16)
 	fmt.Println(pkcs7Pad)
-	pkcs7UnPad := Pkcs7UnPad(pkcs7Pad)
+	pkcs7UnPad := UnPkcs7Padding(pkcs7Pad)
 	fmt.Println(pkcs7UnPad)
 }
 
 func TestEncryptAES(t *testing.T) {
-	aesEncrypt, _ := AesEncrypt("1234", []byte(SubStr(Md5("123"), 0, 16)))
-	fmt.Println(aesEncrypt)
-	aesDecrypt, _ := AesDecrypt("rheAW8gI36t1G1PK6hgV1g==", []byte(SubStr(Md5("123"), 0, 16)))
+	// 原始数据
+	text := []byte("Hello world!")
 
-	fmt.Println(aesDecrypt)
+	// 统一使用32 字节的密钥和16 字节的iv向量
+	key := []byte("12345678123456781234567812345678")
+	iv := []byte("1234567812345678")
+
+	// ECB 模式测试
+	b1, err := AesEncryptECB(text, key[:16])
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("AES-128-ECB 加密结果：%s\n", base64.StdEncoding.EncodeToString(b1))
+	b1, err = AesDecryptECB(b1, key[:16])
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-ECB 解密结果：%s\n", string(b1))
+
+	b2, err := AesEncryptECB(text, key[:24])
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-ECB 加密结果：%s\n", base64.StdEncoding.EncodeToString(b2))
+	b2, err = AesDecryptECB(b2, key[:24])
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-ECB 解密结果：%s\n", string(b2))
+
+	b3, err := AesEncryptECB(text, key)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-ECB 加密结果：%s\n", base64.StdEncoding.EncodeToString(b3))
+	b3, err = AesDecryptECB(b3, key)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-ECB 解密结果：%s\n", string(b3))
+
+	// CBC 模式测试
+	b4, err := AesEncryptCBC(text, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-CBC 加密结果：%s\n", base64.StdEncoding.EncodeToString(b4))
+	b4, err = AesDecryptCBC(b4, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-CBC 解密结果：%s\n", string(b4))
+
+	b5, err := AesEncryptCBC(text, key[:24], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-CBC 加密结果：%s\n", base64.StdEncoding.EncodeToString(b5))
+	b5, err = AesDecryptCBC(b5, key[:24], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-CBC 解密结果：%s\n", string(b5))
+
+	b6, err := AesEncryptCBC(text, key, iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-CBC 加密结果：%s\n", base64.StdEncoding.EncodeToString(b6))
+	b6, err = AesDecryptCBC(b6, key, iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-CBC 解密结果：%s\n", string(b6))
+
+	// CTR 模式测试
+	b7, err := AesEncryptCTR(text, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-CTR 加密结果：%s\n", base64.StdEncoding.EncodeToString(b7))
+	b7, err = AesDecryptCTR(b7, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-CTR 解密结果：%s\n", string(b7))
+
+	b8, err := AesEncryptCTR(text, key[:24], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-CTR 加密结果：%s\n", base64.StdEncoding.EncodeToString(b8))
+	b8, err = AesDecryptCTR(b8, key[:24], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-CTR 解密结果：%s\n", string(b8))
+
+	b9, err := AesEncryptCTR(text, key, iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-CTR 加密结果：%s\n", base64.StdEncoding.EncodeToString(b9))
+	b9, err = AesDecryptCTR(b9, key, iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-CTR 解密结果：%s\n", string(b9))
+
+	b10, err := AesEncryptCFB(text, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-CFB 加密结果：%s\n", base64.StdEncoding.EncodeToString(b10))
+	b10, err = AesDecryptCFB(b10, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-CFB 解密结果：%s\n", string(b10))
+
+	b11, err := AesEncryptCFB(text, key[:24], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-CFB 加密结果：%s\n", base64.StdEncoding.EncodeToString(b11))
+	b11, err = AesDecryptCFB(b11, key[:24], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-192-CFB 解密结果：%s\n", string(b11))
+
+	b12, err := AesEncryptCFB(text, key, iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-CFB 加密结果：%s\n", base64.StdEncoding.EncodeToString(b12))
+	b12, err = AesDecryptCFB(b12, key, iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-256-CFB 解密结果：%s\n", string(b12))
+
+	b13, err := AesEncryptOFB(text, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-OFB 加密结果：%s\n", base64.StdEncoding.EncodeToString(b13))
+	b13, err = AesDecryptOFB(b13, key[:16], iv)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AES-128-OFB 解密结果：%s\n", string(b13))
 }
 
 func TestGetType(t *testing.T) {

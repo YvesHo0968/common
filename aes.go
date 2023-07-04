@@ -4,114 +4,144 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
-	"encoding/base64"
 )
 
-// Pkcs7Pad pks7文本补充
-func Pkcs7Pad(plaintext []byte, blockSize int) []byte {
-	padding := blockSize - (len(plaintext) % blockSize)
-	paddedText := append(plaintext, bytes.Repeat([]byte{byte(padding)}, padding)...)
-	return paddedText
+// Pkcs7Padding PKCS#7 Padding：对于要填充的字节数n，将n个字节都填充为n
+func Pkcs7Padding(data []byte, blockSize int) []byte {
+	pad := blockSize - len(data)%blockSize
+	b := bytes.Repeat([]byte{byte(pad)}, pad)
+	return append(data, b...)
 }
 
-// Pkcs7UnPad pks7文本去除填充
-func Pkcs7UnPad(plaintext []byte) []byte {
-	padding := int(plaintext[len(plaintext)-1])
-	unPaddedText := plaintext[:len(plaintext)-padding]
-	return unPaddedText
+// UnPkcs7Padding PKCS#7去除Padding
+func UnPkcs7Padding(data []byte) []byte {
+	pad := int(data[len(data)-1])
+	return data[:len(data)-pad]
 }
 
-type ecbEncrypt struct {
-	b         cipher.Block
-	blockSize int
-}
-
-func NewECBEncrypt(b cipher.Block) cipher.BlockMode {
-	return &ecbEncrypt{b, b.BlockSize()}
-}
-
-func (x *ecbEncrypt) BlockSize() int { return x.blockSize }
-
-func (x *ecbEncrypt) CryptBlocks(dst, src []byte) {
-	if len(src)%x.blockSize != 0 {
-		panic("crypto/cipher: input not full blocks")
-	}
-	if len(dst) < len(src) {
-		panic("crypto/cipher: output smaller than input")
-	}
-	for len(src) > 0 {
-		x.b.Encrypt(dst, src[:x.blockSize])
-		src = src[x.blockSize:]
-		dst = dst[x.blockSize:]
-	}
-}
-
-type ecbDecrypt struct {
-	b         cipher.Block
-	blockSize int
-}
-
-func NewECBDecrypt(b cipher.Block) cipher.BlockMode {
-	return &ecbDecrypt{b, b.BlockSize()}
-}
-
-func (x *ecbDecrypt) BlockSize() int { return x.blockSize }
-
-func (x *ecbDecrypt) CryptBlocks(dst, src []byte) {
-	if len(src)%x.blockSize != 0 {
-		panic("crypto/cipher: input not full blocks")
-	}
-	if len(dst) < len(src) {
-		panic("crypto/cipher: output smaller than input")
-	}
-	for len(src) > 0 {
-		x.b.Decrypt(dst, src[:x.blockSize])
-		src = src[x.blockSize:]
-		dst = dst[x.blockSize:]
-	}
-}
-
-func AesEncrypt(plaintext string, key []byte) (string, error) {
+// AesEncryptECB 模式加密
+func AesEncryptECB(data, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-
-	paddedPlaintext := Pkcs7Pad([]byte(plaintext), aes.BlockSize)
-
-	ciphertext := make([]byte, len(paddedPlaintext))
-
-	ecb := NewECBEncrypt(block)
-	ecb.CryptBlocks(ciphertext, paddedPlaintext)
-
-	return base64.StdEncoding.EncodeToString(ciphertext), nil
+	data = Pkcs7Padding(data, block.BlockSize())
+	b := make([]byte, len(data))
+	for i := 0; i < len(data); i += block.BlockSize() {
+		block.Encrypt(b[i:i+block.BlockSize()], data[i:i+block.BlockSize()])
+	}
+	return b, nil
 }
 
-func AesDecrypt(ciphertext string, key []byte) (string, error) {
+// AesDecryptECB 模式解密
+func AesDecryptECB(data, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+	b := make([]byte, len(data))
+	for i := 0; i < len(data); i += block.BlockSize() {
+		block.Decrypt(b[i:i+block.BlockSize()], data[i:i+block.BlockSize()])
+	}
+	return UnPkcs7Padding(b), nil
+}
 
-	decodedCiphertext, err := base64.StdEncoding.DecodeString(ciphertext)
+// AesEncryptCBC 模式加密
+func AesEncryptCBC(data, key, iv []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return nil, err
+	}
+	data = Pkcs7Padding(data, block.BlockSize())
+	b := make([]byte, len(data))
+	mode := cipher.NewCBCEncrypter(block, iv)
+	mode.CryptBlocks(b, data)
+	return b, nil
+}
+
+// AesDecryptCBC 模式解密
+func AesDecryptCBC(data, key, iv []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	b := make([]byte, len(data))
+	mode := cipher.NewCBCDecrypter(block, iv)
+	mode.CryptBlocks(b, data)
+	return UnPkcs7Padding(b), nil
+}
+
+// AesEncryptCTR 模式加密
+func AesEncryptCTR(data, key, iv []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	b := make([]byte, len(data))
+	stream := cipher.NewCTR(block, iv)
+	stream.XORKeyStream(b, data)
+	return b, nil
+}
+
+// AesDecryptCTR 模式解密
+func AesDecryptCTR(data, key, iv []byte) ([]byte, error) {
+	return AesEncryptCTR(data, key, iv)
+}
+
+// AesEncryptCFB 加密器
+func AesEncryptCFB(data, key, iv []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
 	}
 
-	if len(ciphertext) < aes.BlockSize {
-		return "", err
+	data = Pkcs7Padding(data, block.BlockSize())
+	cfb := cipher.NewCFBEncrypter(block, iv[:block.BlockSize()])
+	ciphertext := make([]byte, len(data))
+	cfb.XORKeyStream(ciphertext, data)
+
+	return ciphertext, nil
+}
+
+// AesDecryptCFB 模式解密
+func AesDecryptCFB(data, key, iv []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
 	}
 
-	if len(decodedCiphertext)%aes.BlockSize != 0 {
-		return "", err
+	cfb := cipher.NewCFBDecrypter(block, iv[:block.BlockSize()])
+	plaintext := make([]byte, len(data))
+	cfb.XORKeyStream(plaintext, data)
+
+	return UnPkcs7Padding(plaintext), nil
+}
+
+// AesEncryptOFB 加密器
+func AesEncryptOFB(data, key, iv []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
 	}
 
-	decryptedText := make([]byte, len(decodedCiphertext))
+	data = Pkcs7Padding(data, block.BlockSize())
+	ofb := cipher.NewOFB(block, iv[:block.BlockSize()])
+	ciphertext := make([]byte, len(data))
+	ofb.XORKeyStream(ciphertext, data)
 
-	ecb := NewECBDecrypt(block)
-	ecb.CryptBlocks(decryptedText, decodedCiphertext)
+	return ciphertext, nil
+}
 
-	unPaddedText := Pkcs7UnPad(decryptedText)
+// AesDecryptOFB 模式解密
+func AesDecryptOFB(data, key, iv []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
 
-	return string(unPaddedText), nil
+	ofb := cipher.NewOFB(block, iv[:block.BlockSize()])
+	plaintext := make([]byte, len(data))
+	ofb.XORKeyStream(plaintext, data)
+
+	return UnPkcs7Padding(plaintext), nil
 }
