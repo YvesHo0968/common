@@ -352,40 +352,6 @@ func Usleep(microseconds int) {
 	time.Sleep(time.Duration(microseconds) * time.Microsecond)
 }
 
-// GetHostName 获取主机名
-func GetHostName() string {
-	name, err := os.Hostname()
-	if err != nil {
-		name = ""
-	}
-	return name
-}
-
-// GetOS 获取系统
-func GetOS() string {
-	return runtime.GOOS
-}
-
-// GetArch 获取系统架构
-func GetArch() string {
-	return runtime.GOARCH
-}
-
-// GetArchBit 获取架构位数
-func GetArchBit() int {
-	return 32 << (^uint(0) >> 63)
-}
-
-// GetCpuCores 获取cpu数
-func GetCpuCores() int {
-	return runtime.NumCPU()
-}
-
-// SetGoMaxProcs 设置最大进程数
-func SetGoMaxProcs(n int) int {
-	return runtime.GOMAXPROCS(n)
-}
-
 // JsonEncode 结构体转json
 func JsonEncode(data interface{}) string {
 	var json = jsonIter.ConfigCompatibleWithStandardLibrary
