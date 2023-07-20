@@ -16,7 +16,6 @@ import (
 	jsonIter "github.com/json-iterator/go"
 	"github.com/leeqvip/gophp/serialize"
 	goCache "github.com/patrickmn/go-cache"
-	"github.com/rs/zerolog/log"
 	"github.com/sony/sonyflake"
 	"github.com/xxtea/xxtea-go/xxtea"
 	"golang.org/x/text/cases"
@@ -373,7 +372,6 @@ func JsonDecode(data string, val interface{}) error {
 func Serialize(data interface{}) string {
 	jsonByte, err := serialize.Marshal(data)
 	if err != nil {
-		fmt.Printf("Map转化为byte数组失败,异常:%s\n", err)
 		return ""
 	}
 	return string(jsonByte)
@@ -537,7 +535,6 @@ func GetPpid() int {
 func GetGatewayIp() (string, error) {
 	gw, err := gateway.DiscoverGateway()
 	if err != nil {
-		log.Debug().Err(err).Msg("gateway.DiscoverGateway")
 		return "", err
 	}
 

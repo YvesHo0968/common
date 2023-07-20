@@ -3,14 +3,11 @@ package common
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/rs/zerolog"
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"os"
 	"os/exec"
 	"reflect"
-	"strings"
 	"testing"
-	"time"
 )
 
 func TestUuid(t *testing.T) {
@@ -111,74 +108,6 @@ func TestUsleep(t *testing.T) {
 
 func TestGetHostName(t *testing.T) {
 	fmt.Println(GetHostName())
-}
-
-func TestGetOS(t *testing.T) {
-	fmt.Println(GetOS())
-}
-
-func TestGetArch(t *testing.T) {
-	fmt.Println(GetArch())
-}
-
-func TestGetArchBit(t *testing.T) {
-	fmt.Println(GetArchBit())
-}
-
-func TestGetCpuCores(t *testing.T) {
-	fmt.Println(GetCpuCores())
-}
-
-func TestSetGoMaxProcs(t *testing.T) {
-	fmt.Println(SetGoMaxProcs(0))
-}
-
-func TestLog(t *testing.T) {
-	//config.InitLog()
-	//
-	//log := config.Log
-	//
-	//log.Info().Str("foo", "bar").Msg("Hello World")
-	//log.Error().Str("foo", "bar").Msg("Hello World")
-	//
-	//log.Info().
-	//	Str("foo", "bar").
-	//	Dict("dict", zerolog.Dict().
-	//		Str("bar", "baz").
-	//		Int("n", 1),
-	//	).Msg("hello world")
-	//
-	//err := errors.New("A repo man spends his life getting into tense situations")
-	//
-	//fmt.Println(err)
-	//service := "myservice"
-	//
-	//log.Fatal().
-	//	Err(err).
-	//	Str("service", service).
-	//	Msgf("Cannot start %s", service)
-}
-
-func TestLogDemo(t *testing.T) {
-	consoleWriter := zerolog.ConsoleWriter{Out: os.Stdout, NoColor: false, TimeFormat: time.Stamp}
-	consoleWriter.FormatLevel = func(i interface{}) string {
-		return strings.ToUpper(fmt.Sprintf("| %-6s|", i))
-	}
-	consoleWriter.FormatMessage = func(i interface{}) string {
-		return fmt.Sprintf("%s", i)
-	}
-	consoleWriter.FormatFieldName = func(i interface{}) string {
-		return fmt.Sprintf("%s:", i)
-	}
-	consoleWriter.FormatFieldValue = func(i interface{}) string {
-		return fmt.Sprintf("%s;", i)
-	}
-
-	multi := zerolog.MultiLevelWriter(consoleWriter)
-	Logg := zerolog.New(multi).With().Timestamp().Caller().Logger().Level(zerolog.DebugLevel)
-
-	Logg.Printf("ddddd")
-	Logg.Info().Str("foo", "bar").Msg("Hello World")
 }
 
 func TestStructToJson(t *testing.T) {

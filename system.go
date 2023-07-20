@@ -167,7 +167,7 @@ func GetCpuCores() int {
 	return runtime.NumCPU()
 }
 
-// SetGoMaxProcs 设置最大进程数
-func SetGoMaxProcs(n int) int {
+// SetGoMaxProc 设置最大进程数
+func SetGoMaxProc(n int) int {
 	return runtime.GOMAXPROCS(n)
 }
