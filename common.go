@@ -17,7 +17,6 @@ import (
 	"github.com/leeqvip/gophp/serialize"
 	goCache "github.com/patrickmn/go-cache"
 	"github.com/sony/sonyflake"
-	"github.com/xxtea/xxtea-go/xxtea"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"io"
@@ -727,20 +726,6 @@ func DeleteCache(key string) bool {
 	return true
 }
 
-// Xxtea 数据
-func Xxtea() {
-	str := "123"
-	key := "123"
-	encrypt_data := xxtea.Encrypt([]byte(str), []byte(key))
-	fmt.Println(Base64Encoded(string(encrypt_data)))
-	decrypt_data := string(xxtea.Decrypt(encrypt_data, []byte(key)))
-	if str == decrypt_data {
-		fmt.Println("success!")
-	} else {
-		fmt.Println("fail!")
-	}
-}
-
 // CurlPost 请求
 // url：         请求地址
 // data：        POST请求提交的数据
@@ -770,5 +755,9 @@ func Pkcs7Padding(data []byte, blockSize int) []byte {
 // UnPkcs7Padding PKCS#7去除Padding
 func UnPkcs7Padding(data []byte) []byte {
 	pad := int(data[len(data)-1])
+
+	if pad >= len(data) {
+		return []byte{}
+	}
 	return data[:len(data)-pad]
 }
