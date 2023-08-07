@@ -212,10 +212,6 @@ func TestImplode(t *testing.T) {
 	fmt.Println(Implode(",", []string{"hello", "word"}))
 }
 
-func TestExplode(t *testing.T) {
-	fmt.Println(Explode(",", "hello,word"))
-}
-
 func TestSubStr(t *testing.T) {
 	fmt.Println(SubStr("1212", 0, 3))
 }

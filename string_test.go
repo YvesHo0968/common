@@ -2,6 +2,7 @@ package common
 
 import (
 	"fmt"
+	"os"
 	"testing"
 )
 
@@ -22,6 +23,41 @@ func TestChop(t *testing.T) {
 	charList := "\t\n"
 	choppedStr := Chop(str, charList)
 	fmt.Println(choppedStr) //
+}
+
+func TestChr(t *testing.T) {
+	fmt.Println(Chr(52))
+	fmt.Println(Chr(052))
+	fmt.Println(Chr(0x52))
+}
+
+func TestChunkSplit(t *testing.T) {
+	fmt.Println(ChunkSplit("Hello world!", 1, ","))
+}
+
+func TestCrc32(t *testing.T) {
+	fmt.Println(Crc32("Hello World!"))
+}
+
+func TestEcho(t *testing.T) {
+	Echo("Hello World!", "")
+}
+
+func TestExplode(t *testing.T) {
+	fmt.Println(Explode(",", "hello,word"))
+}
+
+func TestFprintf(t *testing.T) {
+	//file, err := os.Create("output.txt")
+	//
+	//if err != nil {
+	//	fmt.Println("Failed to open file:", err)
+	//	return
+	//}
+	//defer file.Close()
+	//
+	//fmt.Println(Fprintf(file, "Name: %s\n", "ddd"))
+	fmt.Println(Fprintf(os.Stdout, "Name: %s\n", "ddd"))
 }
 
 func TestStrVal(t *testing.T) {

@@ -2,6 +2,8 @@ package common
 
 import (
 	"fmt"
+	"hash/crc32"
+	"os"
 	"strings"
 )
 
@@ -49,6 +51,49 @@ func Chop(str string, charList ...string) string {
 	}
 
 	return strings.TrimRight(str, charList[0])
+}
+
+// Chr 从指定 ASCII 值返回字符
+func Chr(i int) string {
+	return string(rune(i))
+}
+
+// ChunkSplit 把字符串分割为一连串更小的部分
+func ChunkSplit(s string, length int, end string) string {
+	var chunks []string
+	for i := 0; i < len(s); i += length {
+		endIndex := i + length
+		if endIndex > len(s) {
+			endIndex = len(s)
+		}
+		chunk := s[i:endIndex]
+		chunks = append(chunks, chunk)
+	}
+	return strings.Join(chunks, end)
+}
+
+// Crc32 计算一个字符串的 32 位 CRC
+func Crc32(str string) uint32 {
+	return crc32.ChecksumIEEE([]byte(str))
+}
+
+func Echo(values ...any) {
+	str := make([]string, 0)
+	for _, v := range values {
+		str = append(str, StrVal(v))
+	}
+
+	fmt.Println(strings.Join(str, " "))
+}
+
+// Explode 字符转数组
+func Explode(sep string, str string) []string {
+	return strings.Split(str, sep)
+}
+
+func Fprintf(w *os.File, format string, a ...interface{}) int {
+	n, _ := fmt.Fprintf(w, format, a...)
+	return n
 }
 
 // StrVal 任意类型转字符串

@@ -489,11 +489,6 @@ func Implode(sep string, elems []string) string {
 	return strings.Join(elems, sep)
 }
 
-// Explode 字符转数组
-func Explode(sep string, str string) []string {
-	return strings.Split(str, sep)
-}
-
 // SubStr 字符串裁剪
 func SubStr(str string, start int, length int) string {
 	rs := []rune(str)
