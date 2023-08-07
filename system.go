@@ -6,6 +6,7 @@ import (
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
 	"github.com/shirou/gopsutil/v3/net"
+	n "net"
 	"os"
 	"runtime"
 )
@@ -170,4 +171,33 @@ func GetCpuCores() int {
 // SetGoMaxProc 设置最大进程数
 func SetGoMaxProc(n int) int {
 	return runtime.GOMAXPROCS(n)
+}
+
+// GetHostByName 返回主机名对应的 IPv4地址
+func GetHostByName(hostname string) string {
+	ipAddr, err := n.LookupIP(hostname)
+	if err != nil {
+		return ""
+	}
+	for _, ip := range ipAddr {
+		if ip4 := ip.To4(); ip4 != nil {
+			return ip4.String()
+		}
+	}
+	return ""
+}
+
+// GetHostByNameL 返回主机名对应的 IPv4地址列表
+func GetHostByNameL(hostname string) []string {
+	hosts := make([]string, 0)
+	ipAddr, err := n.LookupIP(hostname)
+	if err != nil {
+		return hosts
+	}
+	for _, ip := range ipAddr {
+		if ip4 := ip.To4(); ip4 != nil {
+			hosts = append(hosts, ip4.String())
+		}
+	}
+	return hosts
 }

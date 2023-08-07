@@ -33,6 +33,10 @@ func TestNetConnections(t *testing.T) {
 	fmt.Println(NetConnections("tcp"))
 }
 
+func TestGetHostName(t *testing.T) {
+	fmt.Println(GetHostName())
+}
+
 func TestGetOS(t *testing.T) {
 	fmt.Println(GetOS())
 }
@@ -51,4 +55,12 @@ func TestGetCpuCores(t *testing.T) {
 
 func TestSetGoMaxProc(t *testing.T) {
 	fmt.Println(SetGoMaxProc(0))
+}
+
+func TestGetHostByName(t *testing.T) {
+	fmt.Println(GetHostByName(GetHostName()))
+}
+
+func TestGetHostByNameL(t *testing.T) {
+	fmt.Println(GetHostByNameL(GetHostName()))
 }

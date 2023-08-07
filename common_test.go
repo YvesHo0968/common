@@ -106,10 +106,6 @@ func TestUsleep(t *testing.T) {
 	Usleep(1000000)
 }
 
-func TestGetHostName(t *testing.T) {
-	fmt.Println(GetHostName())
-}
-
 func TestStructToJson(t *testing.T) {
 	//DataMap := map[string]int{"a": 1, "b": 2, "c": 3}
 	type S struct {
