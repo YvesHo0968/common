@@ -1,12 +1,16 @@
 package common
 
 import (
+	"crypto/md5"
 	"encoding/hex"
 	"fmt"
 	"hash/crc32"
 	"html"
+	"io"
 	"os"
+	"strconv"
 	"strings"
+	"unicode"
 )
 
 // AddCSlashes 返回在指定的字符前添加反斜杠的字符串
@@ -141,6 +145,87 @@ func HtmlSpecialChars(str string) string {
 // Implode 数组转字符
 func Implode(sep string, elems []string) string {
 	return strings.Join(elems, sep)
+}
+
+// LcFirst 首字母小写
+func LcFirst(str string) string {
+	for _, v := range str {
+		u := string(unicode.ToLower(v))
+		return u + str[len(u):]
+	}
+	return ""
+}
+
+// Ltrim 移除字符串左侧的字符
+func Ltrim(str string, chars string) string {
+	return strings.TrimLeft(str, chars)
+}
+
+// Md5 生成32位md5字串
+func Md5(str string) string {
+	h := md5.New()
+	h.Write([]byte(str))
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+// Md5File 文件MD5
+func Md5File(fileName string) string {
+	file, err := os.Open(fileName)
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
+	if err != nil {
+		return ""
+	}
+	h := md5.New()
+	_, err = io.Copy(h, file)
+	if err != nil {
+		return ""
+	}
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+// Nl2Br 在字符串中的每个新行之前插入 HTML 换行符
+func Nl2Br(s string) string {
+	return strings.ReplaceAll(s, "\n", "<br>")
+}
+
+// NumberFormat 通过千位分组来格式化数字
+func NumberFormat(number float64, decimals int, decimalSep, thousandsSep string) string {
+	// 将浮点数转换为字符串，保留指定小数位数
+	numberStr := strconv.FormatFloat(number, 'f', decimals, 64)
+	// 分割整数和小数部分
+	parts := strings.Split(numberStr, ".")
+	// 添加千分位分隔符
+	if thousandsSep != "" && len(parts[0]) > 3 {
+		for i := len(parts[0]) - 3; i > 0; i -= 3 {
+			parts[0] = parts[0][:i] + thousandsSep + parts[0][i:]
+		}
+	}
+	// 组合整数和小数部分
+	result := parts[0]
+	if decimals > 0 {
+		result += decimalSep + parts[1]
+	}
+	return result
+}
+
+// Ord 返回字符串中第一个字符的 ASCII 值
+func Ord(char string) int {
+	r := []byte(char)
+	if len(r) > 0 {
+		return int(r[0])
+	}
+	return -1
+}
+
+// MbOrd 返回字符串中第一个字符的 ASCII 值
+func MbOrd(char string) int {
+	r := []rune(char)
+	if len(r) > 0 {
+		return int(r[0])
+	}
+	return -1
 }
 
 // StrVal 任意类型转字符串

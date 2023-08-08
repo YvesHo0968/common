@@ -33,10 +33,6 @@ func TestBase64Decode(t *testing.T) {
 	fmt.Println(Base64Decode("aGVsbG8="))
 }
 
-func TestMd5File(t *testing.T) {
-	fmt.Println(Md5File("/Volumes/DATA/镜像/CentOS-7-x86_64-Minimal-2009.iso"))
-}
-
 func TestSha1File(t *testing.T) {
 	fmt.Println(Sha1File("/Volumes/DATA/镜像/CentOS-7-x86_64-Minimal-2009.iso"))
 }
@@ -51,10 +47,6 @@ func TestUcWords(t *testing.T) {
 
 func TestUcFirst(t *testing.T) {
 	fmt.Println(UcFirst("hello word"))
-}
-
-func TestLcFirst(t *testing.T) {
-	fmt.Println(LcFirst("Hello word"))
 }
 
 func TestMdStrLen(t *testing.T) {

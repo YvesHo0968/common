@@ -2,7 +2,6 @@ package common
 
 import (
 	"bytes"
-	"crypto/md5"
 	"crypto/rand"
 	"crypto/sha1"
 	"crypto/tls"
@@ -183,32 +182,6 @@ func StrToTime(str string) int64 {
 	return accumulator
 }
 
-// Md5 生成32位md5字串 Md5("123")
-func Md5(str string) string {
-	h := md5.New()
-	h.Write([]byte(str))
-	return hex.EncodeToString(h.Sum(nil))
-}
-
-// Md5File 文件MD5
-func Md5File(fileName string) string {
-	file, err := os.Open(fileName)
-	defer func(file *os.File) {
-		_ = file.Close()
-	}(file)
-	if err != nil {
-		fmt.Printf("打开文件失败，filename=%v, err=%v", fileName, err)
-		return ""
-	}
-	h := md5.New()
-	_, err = io.Copy(h, file)
-	if err != nil {
-		_ = fmt.Errorf("io.Copy失败，filename=%v, err=%v", fileName, err)
-		return ""
-	}
-	return hex.EncodeToString(h.Sum(nil))
-}
-
 // Sha1 生成sha1字串 sha1("123")
 func Sha1(str string) string {
 	h := sha1.New()
@@ -275,15 +248,6 @@ func UcWords(str string) string {
 func UcFirst(str string) string {
 	for _, v := range str {
 		u := string(unicode.ToUpper(v))
-		return u + str[len(u):]
-	}
-	return ""
-}
-
-// LcFirst 首字母小写
-func LcFirst(str string) string {
-	for _, v := range str {
-		u := string(unicode.ToLower(v))
 		return u + str[len(u):]
 	}
 	return ""

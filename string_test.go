@@ -85,6 +85,46 @@ func TestImplode(t *testing.T) {
 	fmt.Println(Implode(",", []string{"hello", "word"}))
 }
 
+func TestLcFirst(t *testing.T) {
+	s := "Hello word"
+
+	first := string(s[0])
+	rest := s[1:]
+	firstToLower := first + rest
+	fmt.Println(firstToLower)
+	fmt.Println(LcFirst("Hello word"))
+}
+
+func TestLtrim(t *testing.T) {
+	fmt.Println(Ltrim("Hello World!", "Hello"))
+}
+
+func TestMd5(t *testing.T) {
+	fmt.Println(Md5("123"))
+}
+
+func TestMd5File(t *testing.T) {
+	fmt.Println(Md5File("./string.go"))
+}
+
+func TestNl2Br(t *testing.T) {
+	fmt.Println(Nl2Br("One line.\nAnother line."))
+}
+
+func TestNumberFormat(t *testing.T) {
+	fmt.Println(NumberFormat(1000000.1, 2, ".", ","))
+}
+
+func TestOrd(t *testing.T) {
+	fmt.Println(Ord("我"))
+	fmt.Println(Ord("h"))
+}
+
+func TestMbOrd(t *testing.T) {
+	fmt.Println(MbOrd("我"))
+	fmt.Println(MbOrd("h"))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))
