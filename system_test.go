@@ -64,3 +64,7 @@ func TestGetHostByName(t *testing.T) {
 func TestGetHostByNameL(t *testing.T) {
 	fmt.Println(GetHostByNameL(GetHostName()))
 }
+
+func TestGetHostByAddr(t *testing.T) {
+	fmt.Println(GetHostByAddr("127.0.0.1"))
+}

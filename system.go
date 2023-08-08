@@ -201,3 +201,25 @@ func GetHostByNameL(hostname string) []string {
 	}
 	return hosts
 }
+
+// GetHostByAddr 指定 IP 地址对应的 Internet 主机名
+func GetHostByAddr(ip string) string {
+	hostnames, err := n.LookupAddr(ip)
+	if err != nil {
+		return ""
+	}
+	host := ""
+	for _, hostname := range hostnames {
+		ipAddr, err := n.LookupIP(hostname)
+		if err != nil {
+			continue
+		}
+		for _, ipData := range ipAddr {
+			if ipData.String() == ip {
+				host = hostname
+				break
+			}
+		}
+	}
+	return host
+}

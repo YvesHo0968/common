@@ -60,6 +60,31 @@ func TestFprintf(t *testing.T) {
 	fmt.Println(Fprintf(os.Stdout, "Name: %s\n", "ddd"))
 }
 
+func TestHex2Bin(t *testing.T) {
+	fmt.Println(Hex2Bin("313233"))
+}
+
+func TestHtmlEntityDecode(t *testing.T) {
+	fmt.Println(HtmlEntityDecode("&lt;&copy; W3CS&ccedil;h&deg;&deg;&brvbar;&sect;&gt;"))
+	fmt.Println(HtmlEntityDecode("This is some &lt;b&gt;bold&lt;/b&gt; text."))
+}
+
+func TestHtmlEntities(t *testing.T) {
+	fmt.Println(HtmlEntities("<div>Hello & World</div>"))
+}
+
+func TestHtmlSpecialCharsDecode(t *testing.T) {
+	fmt.Println(HtmlSpecialCharsDecode("This is some &lt;b&gt;bold&lt;/b&gt; text."))
+}
+
+func TestHtmlSpecialChars(t *testing.T) {
+	fmt.Println(HtmlSpecialChars("This is some <b>bold</b> text."))
+}
+
+func TestImplode(t *testing.T) {
+	fmt.Println(Implode(",", []string{"hello", "word"}))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))

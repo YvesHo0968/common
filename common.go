@@ -484,11 +484,6 @@ func SendEmail(s SendEmailData, c SmtpConfig) (bool, error) {
 	return true, err
 }
 
-// Implode 数组转字符
-func Implode(sep string, elems []string) string {
-	return strings.Join(elems, sep)
-}
-
 // SubStr 字符串裁剪
 func SubStr(str string, start int, length int) string {
 	rs := []rune(str)

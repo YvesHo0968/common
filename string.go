@@ -1,8 +1,10 @@
 package common
 
 import (
+	"encoding/hex"
 	"fmt"
 	"hash/crc32"
+	"html"
 	"os"
 	"strings"
 )
@@ -91,9 +93,54 @@ func Explode(sep string, str string) []string {
 	return strings.Split(str, sep)
 }
 
+// Fprintf 把格式化的字符串写入到指定的输出流
 func Fprintf(w *os.File, format string, a ...interface{}) int {
 	n, _ := fmt.Fprintf(w, format, a...)
 	return n
+}
+
+// Hex2Bin 把十六进制值的字符串转换为 ASCII 字符
+func Hex2Bin(str string) string {
+	binaryData, err := hex.DecodeString(str)
+	if err != nil {
+		return ""
+	}
+	return string(binaryData)
+}
+
+// HtmlEntityDecode 把 HTML 实体转换为字符。
+func HtmlEntityDecode(str string) string {
+	return html.UnescapeString(str)
+}
+
+// HtmlEntities 把字符转换为 HTML 实体
+func HtmlEntities(text string) string {
+	return html.EscapeString(text)
+}
+
+// HtmlSpecialCharsDecode 把预定义的 HTML 实体 "&lt;"（小于）和 "&gt;"（大于）转换为字符
+func HtmlSpecialCharsDecode(str string) string {
+	decodedString := strings.ReplaceAll(str, "&lt;", "<")
+	decodedString = strings.ReplaceAll(decodedString, "&gt;", ">")
+	decodedString = strings.ReplaceAll(decodedString, "&amp;", "&")
+	decodedString = strings.ReplaceAll(decodedString, "&#039;", "'")
+	decodedString = strings.ReplaceAll(decodedString, "&quot;", "\"")
+	return decodedString
+}
+
+// HtmlSpecialChars 把预定义的字符 "<" （小于）和 ">" （大于）转换为 HTML 实体
+func HtmlSpecialChars(str string) string {
+	encodedString := strings.ReplaceAll(str, "&", "&amp;")
+	encodedString = strings.ReplaceAll(encodedString, "<", "&lt;")
+	encodedString = strings.ReplaceAll(encodedString, ">", "&gt;")
+	encodedString = strings.ReplaceAll(encodedString, "'", "&#039;")
+	encodedString = strings.ReplaceAll(encodedString, "\"", "&quot;")
+	return encodedString
+}
+
+// Implode 数组转字符
+func Implode(sep string, elems []string) string {
+	return strings.Join(elems, sep)
 }
 
 // StrVal 任意类型转字符串

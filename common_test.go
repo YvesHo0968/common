@@ -6,7 +6,6 @@ import (
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"os"
 	"os/exec"
-	"reflect"
 	"testing"
 )
 
@@ -200,12 +199,6 @@ func TestSendEmail(t *testing.T) {
 		Tls:      true,
 	}
 	fmt.Println(SendEmail(s, c))
-}
-
-func TestImplode(t *testing.T) {
-	dd := reflect.TypeOf([]string{"hello", "word"})
-	fmt.Println(dd.String())
-	fmt.Println(Implode(",", []string{"hello", "word"}))
 }
 
 func TestSubStr(t *testing.T) {
