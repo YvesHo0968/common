@@ -289,6 +289,92 @@ func Sha1File(fileName string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+// SimilarText 计算两个字符串的相似度
+func SimilarText(str1, str2 string) int {
+	m := len(str1)
+	n := len(str2)
+	dp := make([][]int, m+1)
+	for i := 0; i <= m; i++ {
+		dp[i] = make([]int, n+1)
+		dp[i][0] = 0
+	}
+	for j := 0; j <= n; j++ {
+		dp[0][j] = 0
+	}
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if str1[i-1] == str2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				if dp[i-1][j] > dp[i][j-1] {
+					dp[i][j] = dp[i-1][j]
+				} else {
+					dp[i][j] = dp[i][j-1]
+				}
+			}
+		}
+	}
+	return dp[m][n]
+}
+
+// Soundex 计算字符串的 soundex 键
+func Soundex(word string) string {
+	soundexMap := map[rune]int{
+		'A': 0, 'E': 0, 'I': 0, 'O': 0, 'U': 0, 'Y': 0,
+		'H': 0, 'W': 0,
+		'B': 1, 'F': 1, 'P': 1, 'V': 1,
+		'C': 2, 'G': 2, 'J': 2, 'K': 2, 'Q': 2, 'S': 2, 'X': 2, 'Z': 2,
+		'D': 3, 'T': 3,
+		'L': 4,
+		'M': 5, 'N': 5,
+		'R': 6,
+	}
+	word = strings.ToUpper(word)
+	soundexCode := string(word[0])
+	for i := 1; i < len(word); i++ {
+		c := word[i]
+		if val, ok := soundexMap[rune(c)]; ok {
+			if val != soundexMap[rune(word[i-1])] {
+				soundexCode += fmt.Sprintf("%d", val)
+			}
+		}
+	}
+	soundexCode = soundexCode + "000"
+	soundexCode = soundexCode[:4]
+	return soundexCode
+}
+
+// Sprintf 把格式化的字符串写入一个变量中
+func Sprintf(format string, a ...any) string {
+	return fmt.Sprintf(format, a...)
+}
+
+// StrGetCsv 把 CSV 字符串解析到数组中
+func StrGetCsv(csvString string) []string {
+	reader := strings.NewReader(csvString)
+	var values []string
+	var insideQuotes bool
+	var currentVal string
+	for {
+		r, _, err := reader.ReadRune()
+		if err != nil {
+			break
+		}
+		if r == '"' { // Check for opening or closing quotes
+			insideQuotes = !insideQuotes
+		} else if r == ',' && !insideQuotes { // Separator found outside quotes
+			values = append(values, currentVal)
+			currentVal = ""
+		} else {
+			currentVal += string(r) // Add character to current value
+		}
+	}
+	if len(currentVal) > 0 { // Add the last value
+		values = append(values, currentVal)
+	}
+	return values
+}
+
 // StrVal 任意类型转字符串
 func StrVal(data any) string {
 	return fmt.Sprintf("%v", data)

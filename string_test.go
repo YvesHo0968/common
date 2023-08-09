@@ -153,6 +153,22 @@ func TestSha1File(t *testing.T) {
 	fmt.Println(Sha1File("./string.go"))
 }
 
+func TestSimilarText(t *testing.T) {
+	fmt.Println(SimilarText("Hello World", "Hello Peter"))
+}
+
+func TestSoundex(t *testing.T) {
+	fmt.Println(Soundex("Apple"))
+}
+
+func TestSprintf(t *testing.T) {
+	fmt.Println(Sprintf("Hello %s", "word!"))
+}
+
+func TestStrGetCsv(t *testing.T) {
+	fmt.Println(StrGetCsv(`"John Doe",25,"New York"`))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))
