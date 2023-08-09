@@ -2,11 +2,13 @@ package common
 
 import (
 	"crypto/md5"
+	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
 	"hash/crc32"
 	"html"
 	"io"
+	"mime/quotedprintable"
 	"os"
 	"strconv"
 	"strings"
@@ -226,6 +228,65 @@ func MbOrd(char string) int {
 		return int(r[0])
 	}
 	return -1
+}
+
+// Print 输出一个或多个变量
+func Print(a ...any) {
+	fmt.Print(a...)
+}
+
+// Printf 输出格式化的字符串
+func Printf(format string, a ...any) {
+	fmt.Printf(format, a...)
+}
+
+// QuotedPrintableEncode 把 8 位字符串转换为 quoted-printable 字符串
+func QuotedPrintableEncode(str string) string {
+	var builder strings.Builder
+	writer := quotedprintable.NewWriter(&builder)
+	_, _ = writer.Write([]byte(str))
+	defer func(writer *quotedprintable.Writer) {
+		_ = writer.Close()
+	}(writer)
+	return builder.String()
+}
+
+// QuotedPrintableDecode 把 quoted-printable 字符串转换为 8 位字符串
+func QuotedPrintableDecode(encoded string) string {
+	b, err := io.ReadAll(quotedprintable.NewReader(strings.NewReader(encoded)))
+	if err != nil {
+		return ""
+	}
+	return string(b)
+}
+
+// Rtrim 移除字符串左侧的字符
+func Rtrim(str string, chars string) string {
+	return strings.TrimRight(str, chars)
+}
+
+// Sha1 生成sha1字串 sha1("123")
+func Sha1(str string) string {
+	h := sha1.New()
+	h.Write([]byte(str))
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+// Sha1File 文件sha1
+func Sha1File(fileName string) string {
+	file, err := os.Open(fileName)
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
+	if err != nil {
+		return ""
+	}
+	h := sha1.New()
+	_, err = io.Copy(h, file)
+	if err != nil {
+		return ""
+	}
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 // StrVal 任意类型转字符串

@@ -17,10 +17,6 @@ func TestPath(t *testing.T) {
 	fmt.Println(Path())
 }
 
-func TestSha1(t *testing.T) {
-	fmt.Println(Sha1("123"))
-}
-
 func TestUniqueId(t *testing.T) {
 	fmt.Println(UniqueId())
 }
@@ -31,10 +27,6 @@ func TestBase64Encoded(t *testing.T) {
 
 func TestBase64Decode(t *testing.T) {
 	fmt.Println(Base64Decode("aGVsbG8="))
-}
-
-func TestSha1File(t *testing.T) {
-	fmt.Println(Sha1File("/Volumes/DATA/镜像/CentOS-7-x86_64-Minimal-2009.iso"))
 }
 
 func TestStrToLower(t *testing.T) {

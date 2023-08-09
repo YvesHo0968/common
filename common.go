@@ -3,10 +3,8 @@ package common
 import (
 	"bytes"
 	"crypto/rand"
-	"crypto/sha1"
 	"crypto/tls"
 	"encoding/base64"
-	"encoding/hex"
 	"fmt"
 	"github.com/bwmarrin/snowflake"
 	"github.com/google/uuid"
@@ -180,32 +178,6 @@ func StrToTime(str string) int64 {
 	}
 
 	return accumulator
-}
-
-// Sha1 生成sha1字串 sha1("123")
-func Sha1(str string) string {
-	h := sha1.New()
-	h.Write([]byte(str))
-	return hex.EncodeToString(h.Sum(nil))
-}
-
-// Sha1File 文件sha1
-func Sha1File(fileName string) string {
-	file, err := os.Open(fileName)
-	defer func(file *os.File) {
-		_ = file.Close()
-	}(file)
-	if err != nil {
-		_ = fmt.Errorf(`打开文件失败，filename=%v, err=%v`, fileName, err)
-		return ""
-	}
-	h := sha1.New()
-	_, err = io.Copy(h, file)
-	if err != nil {
-		_ = fmt.Errorf("io.Copy失败，filename=%v, err=%v", fileName, err)
-		return ""
-	}
-	return hex.EncodeToString(h.Sum(nil))
 }
 
 // UniqueId 生成Guid字串

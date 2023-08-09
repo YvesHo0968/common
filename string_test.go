@@ -125,6 +125,34 @@ func TestMbOrd(t *testing.T) {
 	fmt.Println(MbOrd("h"))
 }
 
+func TestPrint(t *testing.T) {
+	Print("hello word!")
+}
+
+func TestPrintf(t *testing.T) {
+	Printf("hello %s", "word")
+}
+
+func TestQuotedPrintableEncode(t *testing.T) {
+	fmt.Println(QuotedPrintableEncode("Hello world 我们"))
+}
+
+func TestQuotedPrintableDecode(t *testing.T) {
+	fmt.Println(QuotedPrintableDecode("Hello world =E6=88=91=E4=BB=AC"))
+}
+
+func TestRtrim(t *testing.T) {
+	fmt.Println(Rtrim("Hello World!", "World!"))
+}
+
+func TestSha1(t *testing.T) {
+	fmt.Println(Sha1("123"))
+}
+
+func TestSha1File(t *testing.T) {
+	fmt.Println(Sha1File("./string.go"))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))
