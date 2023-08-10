@@ -10,6 +10,7 @@ import (
 	"io"
 	"mime/quotedprintable"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"unicode"
@@ -373,6 +374,51 @@ func StrGetCsv(csvString string) []string {
 		values = append(values, currentVal)
 	}
 	return values
+}
+
+// StrIReplace 替换字符串中的一些字符（大小写不敏感）
+func StrIReplace(search, replace, subject string) string {
+	return regexp.MustCompile("(?i)"+search).ReplaceAllString(subject, replace)
+}
+
+// StrPad 把字符串填充为新的长度
+func StrPad(input string, padLength int, padString string, padType string) string {
+	inputLength := len(input)
+	if padLength <= inputLength {
+		return input
+	}
+	padStringLen := len(padString)
+	difference := padLength - inputLength
+	switch padType {
+	case "STR_PAD_LEFT":
+		padCount := difference / padStringLen
+		padRemainder := difference % padStringLen
+		leftPad := strings.Repeat(padString, padCount) + padString[:padRemainder]
+		return leftPad + input
+	case "STR_PAD_RIGHT":
+		padCount := difference / padStringLen
+		padRemainder := difference % padStringLen
+		rightPad := padString[:padRemainder] + strings.Repeat(padString, padCount)
+		return input + rightPad
+	case "STR_PAD_BOTH":
+		padCount := difference / (padStringLen * 2)
+		padRemainder := difference % (padStringLen * 2)
+		leftPad := strings.Repeat(padString, padCount+1)
+		rightPad := padString[:padRemainder] + strings.Repeat(padString, padCount)
+		return leftPad[:difference/2] + input + rightPad[:difference/2]
+	default:
+		return input
+	}
+}
+
+// StrRepeat 把字符串重复指定的次数
+func StrRepeat(input string, repeatCount int) string {
+	return strings.Repeat(input, repeatCount)
+}
+
+// StrReplace 替换字符串中的一些字符（大小写敏感）
+func StrReplace(search, replace, subject string, count int) string {
+	return strings.Replace(subject, search, replace, count)
 }
 
 // StrVal 任意类型转字符串

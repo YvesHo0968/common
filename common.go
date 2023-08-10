@@ -235,16 +235,6 @@ func StrContains(haystack string, needle string) bool {
 	return strings.Contains(haystack, needle)
 }
 
-// StrRepeat 重复一个字符串
-func StrRepeat(str string, times int) string {
-	return strings.Repeat(str, times)
-}
-
-// StrReplace 子字符串替换
-func StrReplace(search, replace, subject string, count int) string {
-	return strings.Replace(subject, search, replace, count)
-}
-
 // StrShuffle 字符串打乱
 func StrShuffle(str string) string {
 	runes := []rune(str)

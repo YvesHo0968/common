@@ -169,6 +169,24 @@ func TestStrGetCsv(t *testing.T) {
 	fmt.Println(StrGetCsv(`"John Doe",25,"New York"`))
 }
 
+func TestStrIReplace(t *testing.T) {
+	fmt.Println(StrIReplace("WORLD", "Peter", "Hello world!"))
+}
+
+func TestStrPad(t *testing.T) {
+	fmt.Println(StrPad("hello", 10, "*", "STR_PAD_LEFT"))
+	fmt.Println(StrPad("hello", 10, "*", "STR_PAD_RIGHT"))
+	fmt.Println(StrPad("hello", 10, "*", "STR_PAD_BOTH"))
+}
+
+func TestStrRepeat(t *testing.T) {
+	fmt.Println(StrRepeat(".", 10))
+}
+
+func TestStrReplace(t *testing.T) {
+	fmt.Println(StrReplace("body", "black", "<text text='body'>", 1))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))

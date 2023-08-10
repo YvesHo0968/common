@@ -49,14 +49,6 @@ func TestStrContains(t *testing.T) {
 	fmt.Println(StrContains("aaddegg", "aa"))
 }
 
-func TestStrRepeat(t *testing.T) {
-	fmt.Println(StrRepeat("-=", 10))
-}
-
-func TestStrReplace(t *testing.T) {
-	fmt.Println(StrReplace("body", "black", "<text text='body'>", 1))
-}
-
 func TestStrShuffle(t *testing.T) {
 	fmt.Println(StrShuffle("123456"))
 }
