@@ -187,6 +187,58 @@ func TestStrReplace(t *testing.T) {
 	fmt.Println(StrReplace("body", "black", "<text text='body'>", 1))
 }
 
+func TestStrRot13(t *testing.T) {
+	fmt.Println(StrRot13("Hello World"))
+	fmt.Println(StrRot13("Uryyb Jbeyq"))
+}
+
+func TestStrShuffle(t *testing.T) {
+	fmt.Println(StrShuffle("123456"))
+}
+
+func TestStrSplit(t *testing.T) {
+	fmt.Println(StrSplit("Hello, World!", 20))
+}
+
+func TestStrWordCount(t *testing.T) {
+	fmt.Println(StrWordCount("Hello world!"))
+}
+
+func TestStrCaseCmp(t *testing.T) {
+	fmt.Println(StrCaseCmp("Hello world!", "HELLO WORLD!"))
+}
+
+func TestStrChr(t *testing.T) {
+	fmt.Println(StrChr("Hello world!", "world"))
+}
+
+func TestStrCmp(t *testing.T) {
+	fmt.Println(StrCmp("Hello", "hello"))
+	fmt.Println(StrCmp("Hello", "Hello"))
+}
+
+func TestStrCSpn(t *testing.T) {
+	fmt.Println(StrCSpn("Hello world!", "w"))
+}
+
+func TestStripTags(t *testing.T) {
+	fmt.Println(StripTags("Hello <b>world!</b>"))
+}
+
+func TestStripCSlashes(t *testing.T) {
+	AS := AddCSlashes("test sa", "sa")
+	fmt.Println(AS)
+	fmt.Println(StripCSlashes(`Hello\\nWorld`))
+}
+
+func TestStrIpOs(t *testing.T) {
+	fmt.Println(StrIpOs("Hello World", "WORLD"))
+}
+
+func TestStrIStr(t *testing.T) {
+	fmt.Println(StrIStr("Hello World", "WORLD"))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))

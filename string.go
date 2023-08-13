@@ -8,11 +8,13 @@ import (
 	"hash/crc32"
 	"html"
 	"io"
+	r "math/rand"
 	"mime/quotedprintable"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 )
 
@@ -419,6 +421,144 @@ func StrRepeat(input string, repeatCount int) string {
 // StrReplace 替换字符串中的一些字符（大小写敏感）
 func StrReplace(search, replace, subject string, count int) string {
 	return strings.Replace(subject, search, replace, count)
+}
+
+// StrRot13 对字符串执行 ROT13 编码
+func StrRot13(str string) string {
+	var output strings.Builder
+	for _, char := range str {
+		switch {
+		case char >= 'A' && char <= 'M', char >= 'a' && char <= 'm':
+			output.WriteRune(char + 13)
+		case char >= 'N' && char <= 'Z', char >= 'n' && char <= 'z':
+			output.WriteRune(char - 13)
+		default:
+			output.WriteRune(char)
+		}
+	}
+	return output.String()
+}
+
+// StrShuffle 随机地打乱字符串中的所有字符
+func StrShuffle(str string) string {
+	runes := []rune(str)
+	randData := r.New(r.NewSource(time.Now().UnixNano()))
+	s := make([]rune, len(runes))
+	for i, v := range randData.Perm(len(runes)) {
+		s[i] = runes[v]
+	}
+	return string(s)
+}
+
+// StrSplit 把字符串分割到数组中
+func StrSplit(str string, length int) []string {
+	var result []string
+	for len(str) > length {
+		result = append(result, str[:length])
+		str = str[length:]
+	}
+	if len(str) > 0 {
+		result = append(result, str)
+	}
+	return result
+}
+
+// StrWordCount 计算字符串中的单词数
+func StrWordCount(s string) int {
+	words := strings.Fields(s)
+	count := len(words)
+	return count
+}
+
+// StrCaseCmp 比较两个字符串（大小写不敏感）
+func StrCaseCmp(s1, s2 string) int {
+	s1 = strings.ToLower(s1)
+	s2 = strings.ToLower(s2)
+	switch {
+	case s1 < s2:
+		return -1
+	case s1 > s2:
+		return 1
+	default:
+		return 0
+	}
+}
+
+// StrChr 查找字符串在另一字符串中的第一次出现
+func StrChr(s, substr string) string {
+	index := strings.Index(s, substr)
+	if index == -1 {
+		return ""
+	}
+	return s[index:]
+}
+
+// StrCmp 比较两个字符串（大小写敏感）
+func StrCmp(s1, s2 string) int {
+	return strings.Compare(s1, s2)
+}
+
+// StrCSpn 返回在找到任何指定的字符之前，在字符串查找的字符数
+func StrCSpn(str, chars string) int {
+	return strings.IndexAny(str, chars)
+}
+
+// StripTags 剥去字符串中的 HTML 标签
+func StripTags(html string) string {
+	re := regexp.MustCompile(`<[^>]*>`)
+	stripped := re.ReplaceAllString(html, "")
+	return stripped
+}
+
+// StripCSlashes 删除由 AddCSlashes() 函数添加的反斜杠
+func StripCSlashes(str string) string {
+	// 特殊转义字符映射
+	escapeMap := map[string]string{
+		`\\`: `\`,
+		`\"`: `"`,
+		`\'`: "'",
+		`\n`: "\n",
+		`\r`: "\r",
+		`\t`: "\t",
+		`\f`: "\f",
+		`\b`: "\b",
+	}
+	// 替换特殊转义字符
+	for k, v := range escapeMap {
+		str = strings.ReplaceAll(str, k, v)
+	}
+	// 使用 strconv.Unquote 解析转义字符
+	unquoted, err := strconv.Unquote(`"` + str + `"`)
+	if err != nil {
+		// 解析转义序列失败，返回原始字符串
+		return str
+	}
+	return unquoted
+}
+
+// StrIpOs 返回字符串在另一字符串中第一次出现的位置（大小写不敏感）
+func StrIpOs(haystack, needle string) int {
+	// 将haystack和needle转换为小写
+	lowerHaystack := strings.ToLower(haystack)
+	lowerNeedle := strings.ToLower(needle)
+	// 在lowerHaystack中查找lowerNeedle的索引
+	index := strings.Index(lowerHaystack, lowerNeedle)
+	return index
+}
+
+// StrIStr 查找字符串在另一字符串中第一次出现的位置（大小写不敏感）
+func StrIStr(haystack, needle string) string {
+	// 将haystack和needle转换为小写
+	lowerHaystack := strings.ToLower(haystack)
+	lowerNeedle := strings.ToLower(needle)
+	// 在lowerHaystack中查找lowerNeedle的索引
+	index := strings.Index(lowerHaystack, lowerNeedle)
+	if index == -1 {
+		return ""
+	}
+	// 根据索引获取子字符串
+	substring := haystack[index : index+len(needle)]
+	return substring
 }
 
 // StrVal 任意类型转字符串

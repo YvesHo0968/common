@@ -49,10 +49,6 @@ func TestStrContains(t *testing.T) {
 	fmt.Println(StrContains("aaddegg", "aa"))
 }
 
-func TestStrShuffle(t *testing.T) {
-	fmt.Println(StrShuffle("123456"))
-}
-
 func TestStrToUpper(t *testing.T) {
 	fmt.Println(StrToUpper("Hello"))
 }

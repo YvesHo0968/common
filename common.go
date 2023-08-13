@@ -235,17 +235,6 @@ func StrContains(haystack string, needle string) bool {
 	return strings.Contains(haystack, needle)
 }
 
-// StrShuffle 字符串打乱
-func StrShuffle(str string) string {
-	runes := []rune(str)
-	randData := r.New(r.NewSource(time.Now().UnixNano()))
-	s := make([]rune, len(runes))
-	for i, v := range randData.Perm(len(runes)) {
-		s[i] = runes[v]
-	}
-	return string(s)
-}
-
 // Rand 范围随机数
 func Rand(min int, max int) int {
 	return r.Intn(max-min+1) + min
