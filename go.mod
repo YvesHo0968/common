@@ -11,7 +11,7 @@ require (
 	github.com/leeqvip/gophp v1.0.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/shirou/gopsutil/v3 v3.23.7
-	github.com/sony/sonyflake v1.1.0
+	github.com/sony/sonyflake v1.2.0
 	golang.org/x/text v0.12.0
 )
 
