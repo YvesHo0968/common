@@ -225,11 +225,6 @@ func UcFirst(str string) string {
 	return ""
 }
 
-// MdStrLen 字符串长度
-func MdStrLen(str string) int {
-	return len([]rune(str))
-}
-
 // StrContains 确定字符串是否包含指定子串
 func StrContains(haystack string, needle string) bool {
 	return strings.Contains(haystack, needle)

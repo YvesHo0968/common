@@ -217,18 +217,18 @@ func NumberFormat(number float64, decimals int, decimalSep, thousandsSep string)
 
 // Ord 返回字符串中第一个字符的 ASCII 值
 func Ord(char string) int {
-	r := []byte(char)
-	if len(r) > 0 {
-		return int(r[0])
+	bytes := []byte(char)
+	if len(bytes) > 0 {
+		return int(bytes[0])
 	}
 	return -1
 }
 
 // MbOrd 返回字符串中第一个字符的 ASCII 值
 func MbOrd(char string) int {
-	r := []rune(char)
-	if len(r) > 0 {
-		return int(r[0])
+	runes := []rune(char)
+	if len(runes) > 0 {
+		return int(runes[0])
 	}
 	return -1
 }
@@ -359,17 +359,17 @@ func StrGetCsv(csvString string) []string {
 	var insideQuotes bool
 	var currentVal string
 	for {
-		r, _, err := reader.ReadRune()
+		runes, _, err := reader.ReadRune()
 		if err != nil {
 			break
 		}
-		if r == '"' { // Check for opening or closing quotes
+		if runes == '"' { // Check for opening or closing quotes
 			insideQuotes = !insideQuotes
-		} else if r == ',' && !insideQuotes { // Separator found outside quotes
+		} else if runes == ',' && !insideQuotes { // Separator found outside quotes
 			values = append(values, currentVal)
 			currentVal = ""
 		} else {
-			currentVal += string(r) // Add character to current value
+			currentVal += string(runes) // Add character to current value
 		}
 	}
 	if len(currentVal) > 0 { // Add the last value
@@ -559,6 +559,85 @@ func StrIStr(haystack, needle string) string {
 	// 根据索引获取子字符串
 	substring := haystack[index : index+len(needle)]
 	return substring
+}
+
+// StrLen 返回字符串的长度
+func StrLen(str string) int {
+	return len(str)
+}
+
+// MdStrLen 字符串长度
+func MdStrLen(str string) int {
+	return len([]rune(str))
+}
+
+// StrNatCaseCmp 使用一种"自然排序"算法来比较两个字符串（大小写不敏感）
+func StrNatCaseCmp(s1, s2 string) int {
+	s1 = strings.ToLower(s1)
+	s2 = strings.ToLower(s2)
+
+	return StrNatCmp(s1, s2)
+}
+
+// StrNatCmp 使用一种"自然排序"算法来比较两个字符串（大小写敏感）
+func StrNatCmp(s1, s2 string) int {
+	i, j, n1, n2 := 0, 0, len(s1), len(s2)
+	for i < n1 && j < n2 {
+		// 获取当前字符
+		c1 := s1[i]
+		c2 := s2[j]
+		// 如果是数字字符，则按数字进行比较
+		if c1 >= '0' && c1 <= '9' && c2 >= '0' && c2 <= '9' {
+			num1 := 0
+			num2 := 0
+			// 提取数字
+			for i < n1 && s1[i] >= '0' && s1[i] <= '9' {
+				num1 = num1*10 + int(s1[i]-'0')
+				i++
+			}
+			for j < n2 && s2[j] >= '0' && s2[j] <= '9' {
+				num2 = num2*10 + int(s2[j]-'0')
+				j++
+			}
+			// 比较数字大小
+			if num1 < num2 {
+				return -1
+			} else if num1 > num2 {
+				return 1
+			}
+		} else if c1 != c2 { // 如果是字母字符，则按字母的ASCII码进行比较
+			if c1 < c2 {
+				return -1
+			} else {
+				return 1
+			}
+		}
+		// 移动指针
+		i++
+		j++
+	}
+	// 如果两个字符串长度不同，则较长的字符串较大
+	if n1 < n2 {
+		return -1
+	} else if n1 > n2 {
+		return 1
+	}
+	// 如果两个字符串完全相同，则返回0
+	return 0
+}
+
+func StrNCaseCmp(s1, s2 string, n int) int {
+	s1 = strings.ToLower(s1[:n])
+	s2 = strings.ToLower(s2[:n])
+
+	return StrNatCmp(s1, s2)
+}
+
+func StrNCmp(s1, s2 string, n int) int {
+	s1 = s1[:n]
+	s2 = s2[:n]
+
+	return StrNatCmp(s1, s2)
 }
 
 // StrVal 任意类型转字符串

@@ -41,10 +41,6 @@ func TestUcFirst(t *testing.T) {
 	fmt.Println(UcFirst("hello word"))
 }
 
-func TestMdStrLen(t *testing.T) {
-	fmt.Println(MdStrLen("hello中国"))
-}
-
 func TestStrContains(t *testing.T) {
 	fmt.Println(StrContains("aaddegg", "aa"))
 }

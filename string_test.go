@@ -239,6 +239,32 @@ func TestStrIStr(t *testing.T) {
 	fmt.Println(StrIStr("Hello World", "WORLD"))
 }
 
+func TestStrLen(t *testing.T) {
+	fmt.Println(StrLen("hello中国"))
+}
+
+func TestMdStrLen(t *testing.T) {
+	fmt.Println(MdStrLen("hello中国"))
+}
+
+func TestStrNatCaseCmp(t *testing.T) {
+	fmt.Println(StrNatCaseCmp("2Hello world!", "10Hello WORLD!"))
+	fmt.Println(StrNatCaseCmp("10Hello WORLD!", "2Hello world!"))
+}
+
+func TestStrNatCmp(t *testing.T) {
+	fmt.Println(StrNatCmp("2Hello world!", "10Hello world!"))
+	fmt.Println(StrNatCmp("10Hello world!", "2Hello world!"))
+}
+
+func TestStrNCaseCmp(t *testing.T) {
+	fmt.Println(StrNCaseCmp("Hello world!", "hello earth!", 6))
+}
+
+func TestStrNCmp(t *testing.T) {
+	fmt.Println(StrNCmp("Hello world!", "Hello earth!", 6))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))
