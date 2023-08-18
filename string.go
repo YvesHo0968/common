@@ -486,7 +486,7 @@ func StrCaseCmp(s1, s2 string) int {
 
 // StrChr 查找字符串在另一字符串中的第一次出现
 func StrChr(s, substr string) string {
-	index := strings.Index(s, substr)
+	index := StrPos(s, substr)
 	if index == -1 {
 		return ""
 	}
@@ -538,25 +538,19 @@ func StripCSlashes(str string) string {
 
 // StrIpOs 返回字符串在另一字符串中第一次出现的位置（大小写不敏感）
 func StrIpOs(haystack, needle string) int {
-	// 将haystack和needle转换为小写
-	lowerHaystack := strings.ToLower(haystack)
-	lowerNeedle := strings.ToLower(needle)
-	// 在lowerHaystack中查找lowerNeedle的索引
-	index := strings.Index(lowerHaystack, lowerNeedle)
-	return index
+	haystack = strings.ToLower(haystack)
+	needle = strings.ToLower(needle)
+	return StrPos(haystack, needle)
 }
 
 // StrIStr 查找字符串在另一字符串中第一次出现的位置（大小写不敏感）
 func StrIStr(haystack, needle string) string {
-	// 将haystack和needle转换为小写
 	lowerHaystack := strings.ToLower(haystack)
 	lowerNeedle := strings.ToLower(needle)
-	// 在lowerHaystack中查找lowerNeedle的索引
-	index := strings.Index(lowerHaystack, lowerNeedle)
+	index := StrPos(lowerHaystack, lowerNeedle)
 	if index == -1 {
 		return ""
 	}
-	// 根据索引获取子字符串
 	substring := haystack[index : index+len(needle)]
 	return substring
 }
@@ -626,6 +620,7 @@ func StrNatCmp(s1, s2 string) int {
 	return 0
 }
 
+// StrNCaseCmp 前 n 个字符的字符串比较（大小写不敏感）
 func StrNCaseCmp(s1, s2 string, n int) int {
 	s1 = strings.ToLower(s1[:n])
 	s2 = strings.ToLower(s2[:n])
@@ -633,11 +628,58 @@ func StrNCaseCmp(s1, s2 string, n int) int {
 	return StrNatCmp(s1, s2)
 }
 
+// StrNCmp 前 n 个字符的字符串比较（大小写敏感）
 func StrNCmp(s1, s2 string, n int) int {
 	s1 = s1[:n]
 	s2 = s2[:n]
-
 	return StrNatCmp(s1, s2)
+}
+
+// StrPBrk 在字符串中搜索指定字符中的任意一个
+func StrPBrk(str, char string) string {
+	index := StrCSpn(str, char)
+	if index >= 0 {
+		return str[index:]
+	} else {
+		return ""
+	}
+}
+
+// StrPos 字符串在另一字符串中第一次出现的位置（大小写敏感）
+func StrPos(haystack, needle string) int {
+	return strings.Index(haystack, needle)
+}
+
+// StrRChr 查找字符串在另一个字符串中最后一次出现
+func StrRChr(str, char string) string {
+	index := StrRPos(str, char)
+	if index >= 0 {
+		return str[index:]
+	} else {
+		return ""
+	}
+}
+
+// StRRev 反转字符串
+func StRRev(str string) string {
+	runes := []rune(str)
+	length := len(runes)
+	for i, j := 0, length-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
+}
+
+// StrRIPos 查找字符串在另一字符串中最后一次出现的位置(大小写不敏感)
+func StrRIPos(haystack, needle string) int {
+	haystack = strings.ToLower(haystack)
+	needle = strings.ToLower(needle)
+	return StrRPos(haystack, needle)
+}
+
+// StrRPos 查找字符串在另一字符串中最后一次出现的位置(大小写敏感)
+func StrRPos(haystack, needle string) int {
+	return strings.LastIndex(haystack, needle)
 }
 
 // StrVal 任意类型转字符串

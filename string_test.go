@@ -265,6 +265,30 @@ func TestStrNCmp(t *testing.T) {
 	fmt.Println(StrNCmp("Hello world!", "Hello earth!", 6))
 }
 
+func TestStrPBrk(t *testing.T) {
+	fmt.Println(StrPBrk("Hello world!", "e"))
+}
+
+func TestStrPos(t *testing.T) {
+	fmt.Println(StrPos("I love go, I love go too!", "php"))
+}
+
+func TestStrRChr(t *testing.T) {
+	fmt.Println(StrRChr("Hello world!", "world"))
+}
+
+func TestStRRev(t *testing.T) {
+	fmt.Println(StRRev("Hello World!"))
+}
+
+func TestStrRIPos(t *testing.T) {
+	fmt.Println(StrRIPos("I love go, I love go too!", "Go"))
+}
+
+func TestStrRPos(t *testing.T) {
+	fmt.Println(StrRPos("I love go, I love go too!", "go"))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))

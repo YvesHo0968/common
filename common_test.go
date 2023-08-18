@@ -17,6 +17,26 @@ func TestPath(t *testing.T) {
 	fmt.Println(Path())
 }
 
+func TestDate(t *testing.T) {
+	fmt.Println(Date("Y-m-d H:i:s"))
+}
+
+func TestDateToTime(t *testing.T) {
+	fmt.Println(DateToTime("2006-01-02 15:04:05", "2022-01-01 11:00:00"))
+}
+
+func TestStrToTime(t *testing.T) {
+	fmt.Println(StrToTime("2022-01-01 11:00:00"))
+}
+
+func TestFilePath(t *testing.T) {
+	fmt.Println(FilePath())
+}
+
+func TestTime(t *testing.T) {
+	fmt.Println(Time())
+}
+
 func TestUniqueId(t *testing.T) {
 	fmt.Println(UniqueId())
 }
@@ -109,13 +129,14 @@ func TestJsonToStruct(t *testing.T) {
 
 	for i := 0; i <= 10000; i++ {
 		var data []S
-		JsonDecode(str, &data)
+		_ = JsonDecode(str, &data)
+
 		fmt.Println(data)
 	}
 }
 
 func TestSerialize(t *testing.T) {
-	data := map[string]interface{}{"php": "世界上最好的语言"}
+	data := map[string]interface{}{"go": "世界上最好的语言"}
 
 	//data := []int{1, 3}
 
@@ -123,10 +144,10 @@ func TestSerialize(t *testing.T) {
 }
 
 func TestUnSerialize(t *testing.T) {
-	str := `a:1:{s:3:"php";s:24:"世界上最好的语言";}`
+	str := `a:1:{s:2:"go";s:24:"世界上最好的语言";}`
 	out, _ := UnSerialize(str)
 	m := out.(map[string]interface{})
-	fmt.Println(m["php"])
+	fmt.Println(m["go"])
 }
 
 func TestUrlEncode(t *testing.T) {
@@ -355,8 +376,7 @@ func TestEncryptAES(t *testing.T) {
 func TestGetType(t *testing.T) {
 	var str string = "Hello, World!"
 	var num int = 123
-	var flag bool = true
-	fmt.Println(GetType(str), GetType(num), GetType(flag))
+	fmt.Println(GetType(str), GetType(num), GetType(true))
 
 	data := map[string]interface{}{
 		"key1": "value1",

@@ -125,6 +125,7 @@ func DateToTime(format, date string) (int64, error) {
 	return t.Unix(), nil
 }
 
+// StrToTime 文本日期时间解析为 Unix 时间戳
 func StrToTime(str string) int64 {
 	uintToSeconds := map[string]int64{"minute": 60, "hour": 3600, "day": 86400, "week": 604800, "year": (365 * 86400) + 86400}
 
