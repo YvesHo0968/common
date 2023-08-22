@@ -49,24 +49,8 @@ func TestBase64Decode(t *testing.T) {
 	fmt.Println(Base64Decode("aGVsbG8="))
 }
 
-func TestStrToLower(t *testing.T) {
-	fmt.Println(StrToLower("Hello"))
-}
-
-func TestUcWords(t *testing.T) {
-	fmt.Println(UcWords("hello word"))
-}
-
-func TestUcFirst(t *testing.T) {
-	fmt.Println(UcFirst("hello word"))
-}
-
 func TestStrContains(t *testing.T) {
 	fmt.Println(StrContains("aaddegg", "aa"))
-}
-
-func TestStrToUpper(t *testing.T) {
-	fmt.Println(StrToUpper("Hello"))
 }
 
 func TestRand(t *testing.T) {
@@ -188,10 +172,6 @@ func TestSendEmail(t *testing.T) {
 		Tls:      true,
 	}
 	fmt.Println(SendEmail(s, c))
-}
-
-func TestSubStr(t *testing.T) {
-	fmt.Println(SubStr("1212", 0, 3))
 }
 
 func TestGetPid(t *testing.T) {

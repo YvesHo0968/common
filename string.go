@@ -5,6 +5,8 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"hash/crc32"
 	"html"
 	"io"
@@ -19,7 +21,7 @@ import (
 )
 
 // AddCSlashes 返回在指定的字符前添加反斜杠的字符串
-func AddCSlashes(str string, characters string) string {
+func AddCSlashes(str, characters string) string {
 	escapedStr := ""
 	for _, ch := range str {
 		chStr := string(ch)
@@ -680,6 +682,195 @@ func StrRIPos(haystack, needle string) int {
 // StrRPos 查找字符串在另一字符串中最后一次出现的位置(大小写敏感)
 func StrRPos(haystack, needle string) int {
 	return strings.LastIndex(haystack, needle)
+}
+
+// StrSpn 返回在字符串中包含的特定字符的数目
+func StrSpn(str, accept string) int {
+	return strings.IndexFunc(str, func(r rune) bool {
+		return !strings.ContainsRune(accept, r)
+	})
+}
+
+// StrStr 查找字符串在另一字符串中的第一次出现（大小写敏感）
+func StrStr(haystack, needle string) string {
+	index := StrPos(haystack, needle)
+	if index == -1 {
+		return ""
+	}
+	return haystack[index:]
+}
+
+// StrTok 把字符串分割为更小的字符串
+func StrTok(str, sep string) (string, string) {
+	tokens := Explode(sep, str)
+	if len(tokens) <= 1 {
+		return "", ""
+	}
+	remaining := strings.Join(tokens[1:], sep)
+	return tokens[0], remaining
+}
+
+// StrToLower 字符转小写
+func StrToLower(str string) string {
+	return strings.ToLower(str)
+}
+
+// StrToUpper 字符转大写
+func StrToUpper(str string) string {
+	return strings.ToUpper(str)
+}
+
+// StrTr 转换字符串中特定的字符
+func StrTr(str string, replacements map[string]string) string {
+	for old, newStr := range replacements {
+		str = strings.ReplaceAll(str, old, newStr)
+	}
+	return str
+}
+
+// SubStr 字符串裁剪
+func SubStr(str string, start int, l ...int) string {
+	runes := []rune(str)
+	length := len(runes)
+	if len(l) > 0 {
+		length = l[0]
+	}
+
+	if start < 0 {
+		start = len(runes) + start
+	} else if start > len(runes) {
+		start = len(runes)
+	}
+
+	end := start + length
+	if end < 0 {
+		end = len(runes) + end
+	} else if end > len(runes) {
+		end = len(runes)
+	}
+
+	if length < 0 {
+		length = 0
+	} else if end > len(runes) {
+		end = len(runes)
+	}
+	return string(runes[start:end])
+}
+
+// MdSubStr 返回中文字符串的一部分
+func MdSubStr(str string, start int, length ...int) string {
+	return SubStr(str, start, length...)
+}
+
+// SubstrCompare 从指定的开始位置比较两个字符串
+func SubstrCompare(str1, str2 string, startPos, length int, b ...bool) int {
+	substr1 := ""
+	if startPos >= 0 && length > 0 {
+		substr1 = SubStr(str1, startPos, length)
+	}
+
+	isTrue := true
+	if len(b) > 0 {
+		isTrue = b[0]
+	}
+	if isTrue {
+		substr1 = StrToLower(substr1)
+		str2 = StrToLower(str2)
+	}
+	return StrCmp(substr1, str2)
+}
+
+// SubstrCount 计算子串在字符串中出现的次数
+func SubstrCount(str, substr string) int {
+	count := strings.Count(str, substr)
+	return count
+}
+
+// SubstrReplace 把字符串的一部分替换为另一个字符串
+func SubstrReplace(str, repl string, start int, l ...int) string {
+	runes := []rune(str)
+
+	length := len(runes)
+	if len(l) > 0 {
+		length = l[0]
+	}
+
+	if start < 0 {
+		start = len(runes) + start
+	} else if start > len(runes) {
+		start = len(runes)
+	}
+
+	if length < 0 {
+		length = (len(runes) + length) - start
+	}
+
+	end := start + length
+
+	if end < 0 {
+		end = 0
+	} else if end > len(runes) {
+		end = len(runes)
+	}
+	return str[:start] + repl + str[end:]
+}
+
+func Trim(str string) string {
+	start := 0
+	end := len(str) - 1
+	// 从左边开始找到第一个非空白字符的索引
+	for start <= end && (str[start] == ' ' || str[start] == '\t' || str[start] == '\n' || str[start] == '\r') {
+		start++
+	}
+	// 从右边开始找到第一个非空白字符的索引
+	for start <= end && (str[end] == ' ' || str[end] == '\t' || str[end] == '\n' || str[end] == '\r') {
+		end--
+	}
+	if start > end {
+		return ""
+	}
+	return str[start : end+1]
+}
+
+// UcFirst 首字母大写
+func UcFirst(str string) string {
+	for _, v := range str {
+		u := string(unicode.ToUpper(v))
+		return u + str[len(u):]
+	}
+	return ""
+}
+
+// UcWords 把每个单词的首字符转换为大写
+func UcWords(str string) string {
+	return cases.Title(language.Und, cases.NoLower).String(str)
+}
+
+// VFprintf 把格式化的字符串写入到指定的输出流
+func VFprintf(w *os.File, format string, a ...interface{}) int {
+	return Fprintf(w, format, a...)
+}
+
+// VSprintf 把格式化字符串写入变量中
+func VSprintf(format string, a ...any) string {
+	return Sprintf(format, a...)
+}
+
+// Wordwrap
+func Wordwrap(str string, width int, breakChar string) string {
+	words := strings.Fields(str)
+	result := ""
+	lineLength := 0
+	for _, word := range words {
+		wordLength := len(word)
+		if lineLength+wordLength > width {
+			result += breakChar
+			lineLength = 0
+		}
+		result += word + " "
+		lineLength += wordLength + 1
+	}
+	return strings.TrimRight(result, " ")
 }
 
 // StrVal 任意类型转字符串

@@ -289,6 +289,90 @@ func TestStrRPos(t *testing.T) {
 	fmt.Println(StrRPos("I love go, I love go too!", "go"))
 }
 
+func TestStrSpn(t *testing.T) {
+	fmt.Println(StrSpn("Hello world!", "Hello"))
+}
+
+func TestStrStr(t *testing.T) {
+	fmt.Println(StrStr("Hello world!", "world"))
+}
+
+func TestStrTok(t *testing.T) {
+	str := "hello,world,foo,bar"
+	sep := ","
+	token, remaining := StrTok(str, sep)
+	for token != "" {
+		fmt.Println(token)
+		token, remaining = StrTok(remaining, sep)
+	}
+}
+
+func TestStrToLower(t *testing.T) {
+	fmt.Println(StrToLower("Hello"))
+}
+
+func TestStrToUpper(t *testing.T) {
+	fmt.Println(StrToUpper("Hello"))
+}
+
+func TestStrTr(t *testing.T) {
+	str := "你好 hello, world!"
+	replacements := map[string]string{
+		"hello": "Hello",
+		"world": "World",
+	}
+	result := StrTr(str, replacements)
+	fmt.Println(result)
+}
+
+func TestSubStr(t *testing.T) {
+	fmt.Println(SubStr("1212", 0, 3))
+	fmt.Println(SubStr("Hello, World!", -1, 10))
+}
+
+func TestMdSubStr(t *testing.T) {
+	fmt.Println(MdSubStr("1212", 2))
+}
+
+func TestSubstrCompare(t *testing.T) {
+	fmt.Println(SubstrCompare("Hello world", "Hello world", 0, len("Hello world")))
+}
+
+func TestSubstrCount(t *testing.T) {
+	fmt.Println(SubstrCount("Hello, Hello World!", "Hello"))
+}
+
+func TestSubstrReplace(t *testing.T) {
+	fmt.Println(SubstrReplace("Hello, World!", "Bonjour", 7, -2))
+	fmt.Println(SubstrReplace("Hello, World!", "Bonjour", 7, 1))
+	fmt.Println(SubstrReplace("Hello, World!", "Bonjour", 7, 0))
+	fmt.Println(SubstrReplace("Hello, World!", "Bonjour", 7))
+}
+
+func TestTrim(t *testing.T) {
+	fmt.Println(Trim("   Hello, World!   \t\n\r"))
+}
+
+func TestUcFirst(t *testing.T) {
+	fmt.Println(UcFirst("hello word"))
+}
+
+func TestUcWords(t *testing.T) {
+	fmt.Println(UcWords("hello word"))
+}
+
+func TestVFprintf(t *testing.T) {
+	fmt.Println(VFprintf(os.Stdout, "Name: %s\n", "ddd"))
+}
+
+func TestVSprintf(t *testing.T) {
+	fmt.Println(VSprintf("Hello %s", "word!"))
+}
+
+func TestWordwrap(t *testing.T) {
+	fmt.Println(Wordwrap("An example of a long word is: Supercalifragilistic", 15, "\n"))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))

@@ -14,8 +14,6 @@ import (
 	"github.com/leeqvip/gophp/serialize"
 	goCache "github.com/patrickmn/go-cache"
 	"github.com/sony/sonyflake"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"io"
 	"math"
 	r "math/rand"
@@ -31,7 +29,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"unicode"
 )
 
 // Uuid 获取uuid
@@ -202,30 +199,6 @@ func Base64Decode(str string) string {
 	return string(decode)
 }
 
-// StrToLower 字符转小写
-func StrToLower(str string) string {
-	return strings.ToLower(str)
-}
-
-// StrToUpper 字符转大写
-func StrToUpper(str string) string {
-	return strings.ToUpper(str)
-}
-
-// UcWords 把每个单词的首字符转换为大写
-func UcWords(str string) string {
-	return cases.Title(language.Und, cases.NoLower).String(str)
-}
-
-// UcFirst 首字母大写
-func UcFirst(str string) string {
-	for _, v := range str {
-		u := string(unicode.ToUpper(v))
-		return u + str[len(u):]
-	}
-	return ""
-}
-
 // StrContains 确定字符串是否包含指定子串
 func StrContains(haystack string, needle string) bool {
 	return strings.Contains(haystack, needle)
@@ -393,27 +366,6 @@ func SendEmail(s SendEmailData, c SmtpConfig) (bool, error) {
 	}
 
 	return true, err
-}
-
-// SubStr 字符串裁剪
-func SubStr(str string, start int, length int) string {
-	rs := []rune(str)
-	l := len(rs)
-	end := start + length
-
-	if start < 0 {
-		start = 0
-	}
-
-	if start >= l {
-		return ""
-	}
-
-	if end > l {
-		end = l
-	}
-
-	return string(rs[start:end])
 }
 
 // GetType 获取遍历类型
