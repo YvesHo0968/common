@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.3.1
 	github.com/jackpal/gateway v1.0.10
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/json-iterator/go v1.1.12
