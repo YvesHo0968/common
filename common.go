@@ -209,16 +209,6 @@ func Rand(min int, max int) int {
 	return r.Intn(max-min+1) + min
 }
 
-// Ceil 向上取整
-func Ceil(num float64) int {
-	return int(math.Ceil(num))
-}
-
-// Floor 向下取整
-func Floor(num float64) int {
-	return int(math.Floor(num))
-}
-
 // Round 四色五人取整
 func Round(num float64) int {
 	return int(math.Round(num))

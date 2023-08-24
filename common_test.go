@@ -57,14 +57,6 @@ func TestRand(t *testing.T) {
 	fmt.Println(Rand(1000, 9999))
 }
 
-func TestCeil(t *testing.T) {
-	fmt.Println(Ceil(1.2))
-}
-
-func TestFloor(t *testing.T) {
-	fmt.Println(Floor(1.9))
-}
-
 func TestRound(t *testing.T) {
 	fmt.Println(Round(1.5))
 }
