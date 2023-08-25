@@ -856,7 +856,7 @@ func VSprintf(format string, a ...any) string {
 	return Sprintf(format, a...)
 }
 
-// Wordwrap
+// Wordwrap 按照指定长度对字符串进行折行处理
 func Wordwrap(str string, width int, breakChar string) string {
 	words := strings.Fields(str)
 	result := ""

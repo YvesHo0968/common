@@ -349,7 +349,10 @@ func SendEmail(s SendEmailData, c SmtpConfig) (bool, error) {
 
 // GetType 获取遍历类型
 func GetType(v interface{}) string {
-	return reflect.TypeOf(v).String()
+	if reflect.TypeOf(v).Kind() == reflect.Ptr {
+		return reflect.TypeOf(v).Elem().Kind().String()
+	}
+	return reflect.TypeOf(v).Kind().String()
 }
 
 // GetPid 获取进程id
