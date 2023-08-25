@@ -15,7 +15,6 @@ import (
 	goCache "github.com/patrickmn/go-cache"
 	"github.com/sony/sonyflake"
 	"io"
-	"math"
 	r "math/rand"
 	"mime"
 	"net/http"
@@ -202,11 +201,6 @@ func Base64Decode(str string) string {
 // StrContains 确定字符串是否包含指定子串
 func StrContains(haystack string, needle string) bool {
 	return strings.Contains(haystack, needle)
-}
-
-// Round 四色五人取整
-func Round(num float64) int {
-	return int(math.Round(num))
 }
 
 // Sleep 延迟执行秒数

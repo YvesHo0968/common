@@ -204,3 +204,28 @@ func Rad2Deg(num float64) float64 {
 func Rand(min, max int) int {
 	return rand.Intn(max-min+1) + min
 }
+
+// Round 四色五人取整
+func Round(num float64) float64 {
+	return math.Round(num)
+}
+
+// Sin 返回一个数的正弦
+func Sin(num float64) float64 {
+	return math.Sin(num)
+}
+
+// Sinh 返回一个数的双曲正弦
+func Sinh(num float64) float64 {
+	return (math.Exp(num) - math.Exp(-num)) / 2
+}
+
+// Sqrt 返回一个数的平方根
+func Sqrt(num float64) float64 {
+	return math.Sqrt(num)
+}
+
+// Tanh 返回一个数的平方根
+func Tanh(num float64) float64 {
+	return math.Tanh(num)
+}

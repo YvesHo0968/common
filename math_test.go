@@ -159,3 +159,24 @@ func TestRad2Deg(t *testing.T) {
 func TestRand(t *testing.T) {
 	fmt.Println(Rand(1000, 9999))
 }
+
+func TestRound(t *testing.T) {
+	fmt.Println(Round(1.5))
+}
+
+func TestSin(t *testing.T) {
+	fmt.Println(Deg2Rad(30))
+	fmt.Println(Sin(3))
+}
+
+func TestSinh(t *testing.T) {
+	fmt.Println(Sinh(3))
+}
+
+func TestSqrt(t *testing.T) {
+	fmt.Println(Sqrt(9))
+}
+
+func TestTanh(t *testing.T) {
+	fmt.Println(Tanh(10))
+}
