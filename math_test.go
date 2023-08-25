@@ -2,6 +2,7 @@ package common
 
 import (
 	"fmt"
+	"math"
 	"testing"
 )
 
@@ -95,4 +96,66 @@ func TestGetRandMax(t *testing.T) {
 
 func TestHexDec(t *testing.T) {
 	fmt.Println(HexDec("1e"))
+}
+
+func TestHypot(t *testing.T) {
+	fmt.Println(Hypot(3, 4))
+}
+
+func TestIsFinite(t *testing.T) {
+	fmt.Println(IsFinite(1))
+	fmt.Println(IsFinite(math.Inf(1)))
+}
+
+func TestIsInFinite(t *testing.T) {
+	fmt.Println(IsInFinite(2))
+}
+
+func TestIsNaN(t *testing.T) {
+	fmt.Println(IsNaN(2))
+	fmt.Println(IsNaN(math.NaN()))
+}
+
+func TestLcgValue(t *testing.T) {
+	fmt.Println(LcgValue())
+}
+
+func TestLog(t *testing.T) {
+	fmt.Println(Log(2))
+}
+
+func TestLog10(t *testing.T) {
+	fmt.Println(Log10(2))
+}
+
+func TestLog1p(t *testing.T) {
+	fmt.Println(Log1p(2))
+}
+
+func TestMtGetRandMax(t *testing.T) {
+	fmt.Println(MtGetRandMax())
+}
+
+func TestMtRand(t *testing.T) {
+	fmt.Println(MtRand(1000, 9999))
+}
+
+func TestOctDec(t *testing.T) {
+	fmt.Println(OctDec("36"))
+}
+
+func TestPi(t *testing.T) {
+	fmt.Println(Pi())
+}
+
+func TestPow(t *testing.T) {
+	fmt.Println(Pow(2, 4))
+}
+
+func TestRad2Deg(t *testing.T) {
+	fmt.Println(Rad2Deg(Pi()))
+}
+
+func TestRand(t *testing.T) {
+	fmt.Println(Rand(1000, 9999))
 }

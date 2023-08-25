@@ -53,10 +53,6 @@ func TestStrContains(t *testing.T) {
 	fmt.Println(StrContains("aaddegg", "aa"))
 }
 
-func TestRand(t *testing.T) {
-	fmt.Println(Rand(1000, 9999))
-}
-
 func TestRound(t *testing.T) {
 	fmt.Println(Round(1.5))
 }

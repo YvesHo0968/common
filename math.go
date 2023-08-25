@@ -2,6 +2,7 @@ package common
 
 import (
 	"math"
+	"math/rand"
 	"strconv"
 )
 
@@ -127,4 +128,79 @@ func GetRandMax() int64 {
 // HexDec 把十六进制转换为十进制
 func HexDec(num string) string {
 	return BaseConvert(num, 16, 10)
+}
+
+// Hypot 计算直角三角形的斜边长度
+func Hypot(x, y float64) float64 {
+	return math.Hypot(x, y)
+}
+
+// IsFinite 判断是否为有限值
+func IsFinite(value float64) bool {
+	return !math.IsInf(value, 0)
+}
+
+// IsInFinite 判断是否为有限值
+func IsInFinite(value float64) bool {
+	return !IsFinite(value)
+}
+
+// IsNaN 判断是否为非数值
+func IsNaN(value float64) bool {
+	return math.IsNaN(value)
+}
+
+// LcgValue 返回范围为 (0, 1) 的一个伪随机数
+func LcgValue() float64 {
+	return rand.Float64()
+}
+
+// Log 返回一个数的自然对数（以 E 为底）
+func Log(num float64) float64 {
+	return math.Log(num)
+}
+
+// Log10 返回一个数的以 10 为底的对数
+func Log10(num float64) float64 {
+	return math.Log10(num)
+}
+
+// Log1p 返回 log(number+1)
+func Log1p(num float64) float64 {
+	return Log(num + 1)
+}
+
+// MtGetRandMax 返回通过调用 Rand() 函数显示的随机数的最大可能值
+func MtGetRandMax() int64 {
+	return int64(^uint64(0) >> 1)
+}
+
+// MtRand 返回随机整数
+func MtRand(min, max int) int {
+	return Rand(min, max)
+}
+
+// OctDec 把八进制数转换为十进制数
+func OctDec(num string) string {
+	return BaseConvert(num, 8, 10)
+}
+
+// Pi 返回圆周率 PI 的值
+func Pi() float64 {
+	return math.Pi
+}
+
+// Pow 返回 x 的 y 次方
+func Pow(x, y float64) float64 {
+	return math.Pow(x, y)
+}
+
+// Rad2Deg 把弧度值转换为角度值
+func Rad2Deg(num float64) float64 {
+	return num * (180 / math.Pi)
+}
+
+// Rand 返回随机数
+func Rand(min, max int) int {
+	return rand.Intn(max-min+1) + min
 }

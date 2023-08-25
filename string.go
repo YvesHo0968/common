@@ -100,7 +100,7 @@ func Echo(values ...any) {
 }
 
 // Explode 字符转数组
-func Explode(sep string, str string) []string {
+func Explode(sep, str string) []string {
 	return strings.Split(str, sep)
 }
 
@@ -164,7 +164,7 @@ func LcFirst(str string) string {
 }
 
 // Ltrim 移除字符串左侧的字符
-func Ltrim(str string, chars string) string {
+func Ltrim(str, chars string) string {
 	return strings.TrimLeft(str, chars)
 }
 
@@ -266,7 +266,7 @@ func QuotedPrintableDecode(encoded string) string {
 }
 
 // Rtrim 移除字符串左侧的字符
-func Rtrim(str string, chars string) string {
+func Rtrim(str, chars string) string {
 	return strings.TrimRight(str, chars)
 }
 
@@ -386,7 +386,7 @@ func StrIReplace(search, replace, subject string) string {
 }
 
 // StrPad 把字符串填充为新的长度
-func StrPad(input string, padLength int, padString string, padType string) string {
+func StrPad(input string, padLength int, padString, padType string) string {
 	inputLength := len(input)
 	if padLength <= inputLength {
 		return input

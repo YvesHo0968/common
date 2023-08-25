@@ -204,11 +204,6 @@ func StrContains(haystack string, needle string) bool {
 	return strings.Contains(haystack, needle)
 }
 
-// Rand 范围随机数
-func Rand(min int, max int) int {
-	return r.Intn(max-min+1) + min
-}
-
 // Round 四色五人取整
 func Round(num float64) int {
 	return int(math.Round(num))
