@@ -198,11 +198,6 @@ func Base64Decode(str string) string {
 	return string(decode)
 }
 
-// StrContains 确定字符串是否包含指定子串
-func StrContains(haystack string, needle string) bool {
-	return strings.Contains(haystack, needle)
-}
-
 // Sleep 延迟执行秒数
 func Sleep(seconds int) {
 	time.Sleep(time.Duration(seconds) * time.Second)

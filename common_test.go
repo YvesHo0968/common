@@ -49,10 +49,6 @@ func TestBase64Decode(t *testing.T) {
 	fmt.Println(Base64Decode("aGVsbG8="))
 }
 
-func TestStrContains(t *testing.T) {
-	fmt.Println(StrContains("aaddegg", "aa"))
-}
-
 func TestSleep(t *testing.T) {
 	Sleep(1)
 }

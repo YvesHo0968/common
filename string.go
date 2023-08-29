@@ -877,3 +877,8 @@ func Wordwrap(str string, width int, breakChar string) string {
 func StrVal(data any) string {
 	return fmt.Sprintf("%v", data)
 }
+
+// StrContains 确定字符串是否包含指定子串
+func StrContains(haystack string, needle string) bool {
+	return strings.Contains(haystack, needle)
+}

@@ -373,6 +373,10 @@ func TestWordwrap(t *testing.T) {
 	fmt.Println(Wordwrap("An example of a long word is: Supercalifragilistic", 15, "\n"))
 }
 
+func TestStrContains(t *testing.T) {
+	fmt.Println(StrContains("hello word!", "hello"))
+}
+
 func TestStrVal(t *testing.T) {
 	fmt.Println(StrVal("test"))
 	fmt.Println(StrVal(1))
