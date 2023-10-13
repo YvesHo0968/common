@@ -114,7 +114,6 @@ func DiskFreeSpace(directory string) uint64 {
 	var stat syscall.Statfs_t
 	err := syscall.Statfs(directory, &stat)
 	if err != nil {
-		fmt.Println("Failed to get disk free space:", err)
 		return 0
 	}
 	// 可用空间 = 块大小 × 可用块数
@@ -126,11 +125,15 @@ func DiskTotalSpace(directory string) uint64 {
 	var stat syscall.Statfs_t
 	err := syscall.Statfs(directory, &stat)
 	if err != nil {
-		fmt.Println("Failed to get disk usage:", err)
 		return 0
 	}
 	// 总空间大小 = 总块数 * 每块的大小
 	return stat.Blocks * uint64(stat.Bsize)
+}
+
+// FClose 关闭打开的文件
+func FClose(file *os.File) error {
+	return file.Close()
 }
 
 // File 把文件读入一个数组中
@@ -148,7 +151,7 @@ func FileExists(filePath string) bool {
 	return true
 }
 
-// FileGetContents 把文件读入字符串s
+// FileGetContents 把文件读入字符串
 func FileGetContents(filePath string) string {
 	content, err := os.ReadFile(filePath)
 	if err != nil {
@@ -157,6 +160,7 @@ func FileGetContents(filePath string) string {
 	return string(content)
 }
 
+// FilePullContents 把字符串写入文件
 func FilePullContents(filePath, content string, flag int) int {
 	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|flag, 0644)
 	if err != nil {
@@ -199,7 +203,6 @@ func FileCtime(filePath string) int64 {
 
 // FileGroup 返回文件的组 ID
 func FileGroup(filePath string) int {
-	// 获取文件的所属用户
 	uid := FileOwner(filePath)
 	userInfo, err := user.LookupId(fmt.Sprint(uid))
 	if err != nil {
@@ -221,7 +224,6 @@ func FileGroup(filePath string) int {
 
 // FileInode 返回文件的 inode 编号
 func FileInode(filePath string) uint64 {
-	// 获取文件信息
 	fileInfo, err := os.Stat(filePath)
 	if err != nil {
 		return 0
@@ -242,7 +244,6 @@ func FileMtime(filePath string) int64 {
 
 // FileOwner 返回文件的用户 ID （所有者）
 func FileOwner(filePath string) int {
-	// 获取文件信息
 	fileInfo, err := os.Stat(filePath)
 	if err != nil {
 		return 0
@@ -250,4 +251,73 @@ func FileOwner(filePath string) int {
 	// 获取文件的所属用户
 	uid := fileInfo.Sys().(*syscall.Stat_t).Uid
 	return int(uid)
+}
+
+// FilePerms 返回文件的权限
+func FilePerms(filePath string) uint16 {
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		return 0
+	}
+	return fileInfo.Sys().(*syscall.Stat_t).Mode
+}
+
+// FileSize 返回文件大小
+func FileSize(filePath string) int64 {
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		return 0
+	}
+	return fileInfo.Sys().(*syscall.Stat_t).Size
+}
+
+// FileType 返回文件类型
+func FileType(filePath string) string {
+	if IsDir(filePath) {
+		return "dir"
+	}
+	return "file"
+}
+
+// IsDir 判断文件是否是一个目录
+func IsDir(filePath string) bool {
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		return false
+	}
+
+	if fileInfo.IsDir() {
+		return true
+	}
+
+	return false
+}
+
+// IsExecutable 判断文件是否可执行
+func IsExecutable(filename string) bool {
+	fileInfo, err := os.Stat(filename)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	fileMode := fileInfo.Mode()
+	return fileMode&0111 != 0
+}
+
+// IsFile 判断文件是否是常规的文件
+func IsFile(path string) bool {
+	info, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return !info.IsDir()
+}
+
+// IsLink 判断文件是否是连接
+func IsLink(path string) bool {
+	info, err := os.Lstat(path)
+	if err != nil {
+		return false
+	}
+	return info.Mode()&os.ModeSymlink != 0
 }
