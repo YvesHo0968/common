@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"syscall"
 )
 
 // Basename 返回路径中的文件名部分
@@ -110,26 +109,26 @@ func Dirname(filePath string) string {
 }
 
 // DiskFreeSpace 返回目录的可用空间
-func DiskFreeSpace(directory string) uint64 {
-	var stat syscall.Statfs_t
-	err := syscall.Statfs(directory, &stat)
-	if err != nil {
-		return 0
-	}
-	// 可用空间 = 块大小 × 可用块数
-	return stat.Bavail * uint64(stat.Bsize)
-}
+//func DiskFreeSpace(directory string) uint64 {
+//	var stat syscall.Statfs_t
+//	err := syscall.Statfs(directory, &stat)
+//	if err != nil {
+//		return 0
+//	}
+//	// 可用空间 = 块大小 × 可用块数
+//	return stat.Bavail * uint64(stat.Bsize)
+//}
 
 // DiskTotalSpace 返回一个目录的磁盘总容量
-func DiskTotalSpace(directory string) uint64 {
-	var stat syscall.Statfs_t
-	err := syscall.Statfs(directory, &stat)
-	if err != nil {
-		return 0
-	}
-	// 总空间大小 = 总块数 * 每块的大小
-	return stat.Blocks * uint64(stat.Bsize)
-}
+//func DiskTotalSpace(directory string) uint64 {
+//	var stat syscall.Statfs_t
+//	err := syscall.Statfs(directory, &stat)
+//	if err != nil {
+//		return 0
+//	}
+//	// 总空间大小 = 总块数 * 每块的大小
+//	return stat.Blocks * uint64(stat.Bsize)
+//}
 
 // FClose 关闭打开的文件
 func FClose(file *os.File) error {
@@ -182,94 +181,94 @@ func FilePullContents(filePath, content string, flag int) int {
 }
 
 // FileAtime 返回文件的上次访问时间
-func FileAtime(filePath string) int64 {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return 0
-	}
-	// 获取文件的上次访问时间
-	return fileInfo.Sys().(*syscall.Stat_t).Atimespec.Sec
-}
+//func FileAtime(filePath string) int64 {
+//	fileInfo, err := os.Stat(filePath)
+//	if err != nil {
+//		return 0
+//	}
+//	// 获取文件的上次访问时间
+//	return fileInfo.Sys().(*syscall.Stat_t).Atimespec.Sec
+//}
 
 // FileCtime 返回文件的上次修改时间
-func FileCtime(filePath string) int64 {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return 0
-	}
-	// 获取文件的上次访问时间
-	return fileInfo.Sys().(*syscall.Stat_t).Ctimespec.Sec
-}
+//func FileCtime(filePath string) int64 {
+//	fileInfo, err := os.Stat(filePath)
+//	if err != nil {
+//		return 0
+//	}
+//	// 获取文件的上次访问时间
+//	return fileInfo.Sys().(*syscall.Stat_t).Ctimespec.Sec
+//}
 
 // FileGroup 返回文件的组 ID
-func FileGroup(filePath string) int {
-	uid := FileOwner(filePath)
-	userInfo, err := user.LookupId(fmt.Sprint(uid))
-	if err != nil {
-		return 0
-	}
-	// 获取所属组名
-	groupName, err := user.LookupGroupId(userInfo.Gid)
-	if err != nil {
-		return 0
-	}
-
-	groupId, err := strconv.Atoi(groupName.Gid)
-	if err != nil {
-		return 0
-	}
-
-	return groupId
-}
+//func FileGroup(filePath string) int {
+//	uid := FileOwner(filePath)
+//	userInfo, err := user.LookupId(fmt.Sprint(uid))
+//	if err != nil {
+//		return 0
+//	}
+//	// 获取所属组名
+//	groupName, err := user.LookupGroupId(userInfo.Gid)
+//	if err != nil {
+//		return 0
+//	}
+//
+//	groupId, err := strconv.Atoi(groupName.Gid)
+//	if err != nil {
+//		return 0
+//	}
+//
+//	return groupId
+//}
 
 // FileInode 返回文件的 inode 编号
-func FileInode(filePath string) uint64 {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return 0
-	}
-	// 获取文件的inode号
-	return fileInfo.Sys().(*syscall.Stat_t).Ino
-}
+//func FileInode(filePath string) uint64 {
+//	fileInfo, err := os.Stat(filePath)
+//	if err != nil {
+//		return 0
+//	}
+//	// 获取文件的inode号
+//	return fileInfo.Sys().(*syscall.Stat_t).Ino
+//}
 
 // FileMtime 返回文件内容的上次修改时间
-func FileMtime(filePath string) int64 {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return 0
-	}
-	// 获取文件的上次访问时间
-	return fileInfo.Sys().(*syscall.Stat_t).Mtimespec.Sec
-}
+//func FileMtime(filePath string) int64 {
+//	fileInfo, err := os.Stat(filePath)
+//	if err != nil {
+//		return 0
+//	}
+//	// 获取文件的上次访问时间
+//	return fileInfo.Sys().(*syscall.Stat_t).Mtimespec.Sec
+//}
 
 // FileOwner 返回文件的用户 ID （所有者）
-func FileOwner(filePath string) int {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return 0
-	}
-	// 获取文件的所属用户
-	uid := fileInfo.Sys().(*syscall.Stat_t).Uid
-	return int(uid)
-}
+//func FileOwner(filePath string) int {
+//	fileInfo, err := os.Stat(filePath)
+//	if err != nil {
+//		return 0
+//	}
+//	// 获取文件的所属用户
+//	uid := fileInfo.Sys().(*syscall.Stat_t).Uid
+//	return int(uid)
+//}
 
 // FilePerms 返回文件的权限
-func FilePerms(filePath string) uint16 {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return 0
-	}
-	return fileInfo.Sys().(*syscall.Stat_t).Mode
-}
+//func FilePerms(filePath string) uint16 {
+//	fileInfo, err := os.Stat(filePath)
+//	if err != nil {
+//		return 0
+//	}
+//	return fileInfo.Sys().(*syscall.Stat_t).Mode
+//}
 
 // FileSize 返回文件大小
-func FileSize(filePath string) int64 {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return 0
-	}
-	return fileInfo.Sys().(*syscall.Stat_t).Size
-}
+//func FileSize(filePath string) int64 {
+//	fileInfo, err := os.Stat(filePath)
+//	if err != nil {
+//		return 0
+//	}
+//	return fileInfo.Sys().(*syscall.Stat_t).Size
+//}
 
 // FileType 返回文件类型
 func FileType(filePath string) string {

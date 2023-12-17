@@ -32,13 +32,13 @@ func TestDirname(t *testing.T) {
 	fmt.Println(Dirname("/path/to/file.txt"))
 }
 
-func TestDiskFreeSpace(t *testing.T) {
-	fmt.Println(DiskFreeSpace("/"))
-}
+//func TestDiskFreeSpace(t *testing.T) {
+//	fmt.Println(DiskFreeSpace("/"))
+//}
 
-func TestDiskTotalSpace(t *testing.T) {
-	fmt.Println(DiskTotalSpace("/"))
-}
+//func TestDiskTotalSpace(t *testing.T) {
+//	fmt.Println(DiskTotalSpace("/"))
+//}
 
 func TestFClose(t *testing.T) {
 	file, err := os.Open("./math.go")
@@ -76,37 +76,37 @@ func TestFilePullContents(t *testing.T) {
 	fmt.Println(FilePullContents("/path/to/file.txt", "O_APPEND", os.O_APPEND))
 }
 
-func TestFileAtime(t *testing.T) {
-	fmt.Println(FileAtime("/path/to/file.txt"))
-}
+//func TestFileAtime(t *testing.T) {
+//	fmt.Println(FileAtime("/path/to/file.txt"))
+//}
 
-func TestFileCtime(t *testing.T) {
-	fmt.Println(FileCtime("/path/to/file.txt"))
-}
+//func TestFileCtime(t *testing.T) {
+//	fmt.Println(FileCtime("/path/to/file.txt"))
+//}
 
-func TestFileGroup(t *testing.T) {
-	fmt.Println(FileGroup("/path/to/file.txt"))
-}
+//func TestFileGroup(t *testing.T) {
+//	fmt.Println(FileGroup("/path/to/file.txt"))
+//}
 
-func TestFileInode(t *testing.T) {
-	fmt.Println(FileInode("/path/to/file.txt"))
-}
+//func TestFileInode(t *testing.T) {
+//	fmt.Println(FileInode("/path/to/file.txt"))
+//}
 
-func TestFileMtime(t *testing.T) {
-	fmt.Println(FileMtime("/path/to/file.txt"))
-}
+//func TestFileMtime(t *testing.T) {
+//	fmt.Println(FileMtime("/path/to/file.txt"))
+//}
 
-func TestFileOwner(t *testing.T) {
-	fmt.Println(FileOwner("/path/to/file.txt"))
-}
+//func TestFileOwner(t *testing.T) {
+//	fmt.Println(FileOwner("/path/to/file.txt"))
+//}
 
-func TestFilePerms(t *testing.T) {
-	fmt.Println(fmt.Sprintf("%o", FilePerms("/path/to/file.txt")))
-}
+//func TestFilePerms(t *testing.T) {
+//	fmt.Println(fmt.Sprintf("%o", FilePerms("/path/to/file.txt")))
+//}
 
-func TestFileSize(t *testing.T) {
-	fmt.Println(FileSize("/path/to/file.txt"))
-}
+//func TestFileSize(t *testing.T) {
+//	fmt.Println(FileSize("/path/to/file.txt"))
+//}
 
 func TestFileType(t *testing.T) {
 	fmt.Println(FileType("/path/to/file.txt"))
