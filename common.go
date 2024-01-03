@@ -5,12 +5,12 @@ import (
 	"crypto/rand"
 	"crypto/tls"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"github.com/bwmarrin/snowflake"
 	"github.com/google/uuid"
 	"github.com/jackpal/gateway"
 	"github.com/jordan-wright/email"
-	jsonIter "github.com/json-iterator/go"
 	"github.com/leeqvip/gophp/serialize"
 	goCache "github.com/patrickmn/go-cache"
 	"github.com/sony/sonyflake"
@@ -210,7 +210,6 @@ func Usleep(microseconds int) {
 
 // JsonEncode 结构体转json
 func JsonEncode(data interface{}) string {
-	var json = jsonIter.ConfigCompatibleWithStandardLibrary
 	jsonByte, err := json.Marshal(data)
 	if err != nil {
 		fmt.Printf("Map转化为byte数组失败,异常:%s\n", err)
@@ -221,7 +220,6 @@ func JsonEncode(data interface{}) string {
 
 // JsonDecode json转结构体
 func JsonDecode(data string, val interface{}) error {
-	var json = jsonIter.ConfigCompatibleWithStandardLibrary
 	return json.Unmarshal([]byte(data), val)
 }
 

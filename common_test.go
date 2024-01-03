@@ -57,7 +57,7 @@ func TestUsleep(t *testing.T) {
 	Usleep(1000000)
 }
 
-func TestStructToJson(t *testing.T) {
+func TestJsonEncode(t *testing.T) {
 	//DataMap := map[string]int{"a": 1, "b": 2, "c": 3}
 	type S struct {
 		Name string `json:"name,omitempty"`
@@ -82,7 +82,7 @@ func TestStructToJson(t *testing.T) {
 	}
 }
 
-func TestJsonToStruct(t *testing.T) {
+func TestJsonDecode(t *testing.T) {
 	str := `[{"name":"小红","age":18,"sex":"女"},{"name":"小李","age":20,"sex":"男"},{"name":"夏龙","age":18,"sex":"女"}]`
 
 	type S struct {
