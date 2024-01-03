@@ -12,7 +12,7 @@ require (
 	github.com/json-iterator/go v1.1.12
 	github.com/leeqvip/gophp v1.1.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/shirou/gopsutil/v3 v3.23.11
+	github.com/shirou/gopsutil/v3 v3.23.12
 	github.com/sony/sonyflake v1.2.0
 	golang.org/x/text v0.14.0
 )
