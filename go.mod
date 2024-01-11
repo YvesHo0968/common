@@ -8,7 +8,6 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/google/uuid v1.5.0
 	github.com/jackpal/gateway v1.0.13
-	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/leeqvip/gophp v1.1.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/shirou/gopsutil/v3 v3.23.12

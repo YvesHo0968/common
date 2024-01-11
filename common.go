@@ -10,13 +10,11 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/google/uuid"
 	"github.com/jackpal/gateway"
-	"github.com/jordan-wright/email"
 	"github.com/leeqvip/gophp/serialize"
 	goCache "github.com/patrickmn/go-cache"
 	"github.com/sony/sonyflake"
 	"io"
 	r "math/rand"
-	"mime"
 	"net/http"
 	"net/smtp"
 	"net/url"
@@ -278,66 +276,76 @@ func SnowflakeId() int {
 	return int(id)
 }
 
-type SendEmailData struct {
-	FormName string
-	ToEmail  []string
-	Subject  string
-	Text     string
-	HTML     string
-}
-
-type SmtpConfig struct {
-	Username string
-	Password string
-	Host     string
-	Port     int
-	Tls      bool
-}
-
-// SendEmail 发送邮箱
-func SendEmail(s SendEmailData, c SmtpConfig) (bool, error) {
-	e := email.NewEmail()
-
-	smtpUsername := c.Username
-	smtpPassword := c.Password
-	smtpHost := c.Host
-	smtpPort := c.Port
-	smtpTls := c.Tls
-
-	from := fmt.Sprintf("%s <%s>", mime.QEncoding.Encode("UTF-8", s.FormName), smtpUsername)
-	e.From = from         //设置发件人；
-	e.To = s.ToEmail      // 设置发给谁，支持多人；
-	e.Subject = s.Subject // 指定邮件标题
-
-	if s.Text != "" {
-		e.Text = []byte(s.Text) // 指定普通文本邮件正文
-	}
-
-	if s.HTML != "" {
-		e.HTML = []byte(s.HTML) // 指定 HTML 格式邮件正文
-	}
-
-	//e.AttachFile("zap.log")
-
-	auth := smtp.PlainAuth("", smtpUsername, smtpPassword, smtpHost)
-
-	var err error
-
-	if smtpTls {
-		tlsConfig := &tls.Config{
-			InsecureSkipVerify: true,
-			ServerName:         smtpHost,
-		}
-		err = e.SendWithTLS(fmt.Sprintf("%s:%d", smtpHost, smtpPort), auth, tlsConfig)
+// Mail 发送邮箱
+func Mail(user, password, userName, host, port, to, subject, body, mailType string, isTls bool) error {
+	auth := smtp.PlainAuth("", user, password, host)
+	var contentType string
+	if mailType == "html" {
+		contentType = "Content-Type: text/" + mailType + "; charset=UTF-8"
 	} else {
-		err = e.Send(fmt.Sprintf("%s:%d", smtpHost, smtpPort), auth)
+		contentType = "Content-Type: text/plain" + "; charset=UTF-8"
 	}
 
-	if err != nil {
-		return false, err
-	}
+	//msg := []byte("To: " + to + "\r\nFrom: " + userName + "<" + user + ">" + "\r\nSubject: " + subject + "\r\n" + contentType + "\r\n\r\n" + body)
+	msg := []byte("From: " + userName + "<" + user + ">" + "\r\nSubject: " + subject + "\r\n" + contentType + "\r\n\r\n" + body)
+	sendTo := strings.Split(Trim(to), ";")
 
-	return true, err
+	if isTls {
+		// 配置TLS连接
+		tlsConfig := &tls.Config{
+			InsecureSkipVerify: true, // 可能需要根据你的邮件服务器配置进行更改
+			ServerName:         host,
+		}
+		// 连接到邮件服务器
+		conn, err := tls.Dial("tcp", host+":"+port, tlsConfig)
+		if err != nil {
+			return err
+		}
+
+		defer func(conn *tls.Conn) {
+			_ = conn.Close()
+		}(conn)
+
+		client, err := smtp.NewClient(conn, host)
+		if err != nil {
+			return err
+		}
+
+		defer func(client *smtp.Client) {
+			_ = client.Close()
+		}(client)
+
+		// 进行SMTP认证
+		err = client.Auth(auth)
+		if err != nil {
+			return err
+		}
+
+		// 设置发件人和收件人
+		err = client.Mail(user)
+		if err != nil {
+			return err
+		}
+
+		for _, toEmail := range sendTo {
+			_ = client.Rcpt(toEmail)
+		}
+
+		// 发送邮件内容
+		wc, err := client.Data()
+		if err != nil {
+			return err
+		}
+
+		defer func(wc io.WriteCloser) {
+			_ = wc.Close()
+		}(wc)
+
+		_, err = wc.Write(msg)
+		return err
+	} else {
+		return smtp.SendMail(host, auth, user, sendTo, msg)
+	}
 }
 
 // GetType 获取遍历类型

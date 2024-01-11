@@ -135,23 +135,35 @@ func TestSnowflakeId(t *testing.T) {
 	fmt.Println(SnowflakeId())
 }
 
-func TestSendEmail(t *testing.T) {
-	s := SendEmailData{
-		FormName: "Go邮箱测试",
-		ToEmail:  []string{"11111@qq.com"},
-		Subject:  "测试第三方 email 库",
-		Text:     "",
-		HTML:     "<h1>HTML 正文</h1>",
+func TestMail(t *testing.T) {
+	user := "xxxx@qq.com"          // 账号
+	password := "xxxxxx"           // 密码
+	userName := "GOLANG SEND MAIL" // 发送邮件的人名称
+	host := "smtpdm.aliyun.com"    // 地址
+	port := "465"                  // 端口
+	to := "xxx@qq.com;xxx@qq.com;" // 发送邮箱，多邮箱;分隔
+	subject := "使用Golang发送邮件"      // 邮箱主题
+
+	body := `
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="iso-8859-15">
+			<title>xxx</title>
+		</head>
+		<body>
+			GO 发送邮件
+		</body>
+		</html>`
+
+	err := Mail(user, password, userName, host, port, to, subject, body, "html", true)
+	if err != nil {
+		fmt.Println("Send mail error!")
+		fmt.Println(err)
+	} else {
+		fmt.Println("Send mail success!")
 	}
 
-	c := SmtpConfig{
-		Username: "xxx@aliyun.com",
-		Password: "Password",
-		Host:     "smtpdm.aliyun.com",
-		Port:     465,
-		Tls:      true,
-	}
-	fmt.Println(SendEmail(s, c))
 }
 
 func TestGetPid(t *testing.T) {
