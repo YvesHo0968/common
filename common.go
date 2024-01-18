@@ -279,11 +279,10 @@ func SnowflakeId() int {
 // Mail 发送邮箱
 func Mail(user, password, userName, host, port, to, subject, body, mailType string, isTls bool) error {
 	auth := smtp.PlainAuth("", user, password, host)
-	var contentType string
+	var contentType = "Content-Type: text/plain; charset=UTF-8"
+	
 	if mailType == "html" {
 		contentType = "Content-Type: text/" + mailType + "; charset=UTF-8"
-	} else {
-		contentType = "Content-Type: text/plain" + "; charset=UTF-8"
 	}
 
 	//msg := []byte("To: " + to + "\r\nFrom: " + userName + "<" + user + ">" + "\r\nSubject: " + subject + "\r\n" + contentType + "\r\n\r\n" + body)

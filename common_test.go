@@ -137,7 +137,7 @@ func TestSnowflakeId(t *testing.T) {
 
 func TestMail(t *testing.T) {
 	user := "xxxx@qq.com"          // 账号
-	password := "xxxxxx"           // 密码
+	password := "password"         // 密码
 	userName := "GOLANG SEND MAIL" // 发送邮件的人名称
 	host := "smtpdm.aliyun.com"    // 地址
 	port := "465"                  // 端口
