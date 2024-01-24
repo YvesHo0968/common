@@ -6,7 +6,7 @@ toolchain go1.21.4
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/google/uuid v1.5.0
+	github.com/google/uuid v1.6.0
 	github.com/jackpal/gateway v1.0.13
 	github.com/leeqvip/gophp v1.1.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
