@@ -10,7 +10,7 @@ require (
 	github.com/jackpal/gateway v1.0.14
 	github.com/leeqvip/gophp v1.1.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/shirou/gopsutil/v3 v3.24.2
+	github.com/shirou/gopsutil/v3 v3.24.3
 	github.com/sony/sonyflake v1.2.0
 	golang.org/x/text v0.14.0
 )
@@ -27,7 +27,7 @@ require (
 	github.com/tklauser/go-sysconf v0.3.13 // indirect
 	github.com/tklauser/numcpus v0.7.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	golang.org/x/net v0.22.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/net v0.24.0 // indirect
+	golang.org/x/sys v0.19.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
