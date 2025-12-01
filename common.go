@@ -7,12 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/bwmarrin/snowflake"
-	"github.com/google/uuid"
-	"github.com/jackpal/gateway"
-	"github.com/leeqvip/gophp/serialize"
-	goCache "github.com/patrickmn/go-cache"
-	"github.com/sony/sonyflake"
 	"io"
 	r "math/rand"
 	"net/http"
@@ -26,6 +20,13 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/bwmarrin/snowflake"
+	"github.com/google/uuid"
+	"github.com/jackpal/gateway"
+	"github.com/leeqvip/gophp/serialize"
+	goCache "github.com/patrickmn/go-cache"
+	"github.com/sony/sonyflake"
 )
 
 // Uuid 获取uuid
@@ -280,7 +281,7 @@ func SnowflakeId() int {
 func Mail(user, password, userName, host, port, to, subject, body, mailType string, isTls bool) error {
 	auth := smtp.PlainAuth("", user, password, host)
 	var contentType = "Content-Type: text/plain; charset=UTF-8"
-	
+
 	if mailType == "html" {
 		contentType = "Content-Type: text/" + mailType + "; charset=UTF-8"
 	}
@@ -572,7 +573,7 @@ func CurlPost(url string, data interface{}, contentType string) string {
 	jsonStr := JsonEncode(data)
 	resp, err := client.Post(url, contentType, bytes.NewBuffer([]byte(jsonStr)))
 	if err != nil {
-		panic(err)
+		return ""
 	}
 	defer resp.Body.Close()
 
